@@ -10,11 +10,11 @@ private:
 
 public:
     Baloon(){
-        setPrice(0);
-        setColor("");
+        m_price = 0;
+        m_color = nullptr;
     }
 
-    Baloon(double price, const char* color) : m_price(price), m_color(nullptr) {
+    Baloon(double price, const char* color) : m_color(nullptr) {
         setPrice(price);
         setColor(color);
     }
@@ -58,17 +58,15 @@ class Shisha{
 
 private:    
     double m_price;
-    char* m_type; // marka 
+    char* m_type;
     char* m_taste; 
 
 public: 
 
-    Shisha() : m_price(0){
-        setTaste("");
-        setType("");
-    };
+    Shisha() : m_price(0), m_type(nullptr), m_taste(nullptr){}
 
-    Shisha(double price, const char* type, const char* taste) : m_price(price), m_type(nullptr), m_taste(nullptr) {
+    Shisha(double price, const char* type, const char* taste) : m_type(nullptr), m_taste(nullptr) {
+        setPrice(price);
         setType(type);
         setTaste(taste);
     }
@@ -78,7 +76,7 @@ public:
         delete[] m_taste;
     }
     
-    void print(){
+    void print() const{
         std::cout << "Price: " << m_price << "\nType: " << m_type << "\nTaste: " << m_taste << std::endl;
     }
     
@@ -124,15 +122,14 @@ class Alcohol{
 
 private:    
     double m_price;
-    char* m_name; // marka
+    char* m_name;
 
 public: 
 
-    Alcohol() : m_price(0){
-        setName("");
-    };
+    Alcohol() : m_price(0), m_name(nullptr) {};
 
-    Alcohol(double price, const char* name) : m_price(price), m_name(nullptr) {
+    Alcohol(double price, const char* name) : m_name(nullptr) {
+        setPrice(price);
         setName(name);
     }
 
@@ -140,7 +137,7 @@ public:
         delete[] m_name;
     }
     
-    void print(){
+    void print() const{
         std::cout << "Price: " << m_price << "\nName: " << m_name << std::endl;
     }
     
@@ -185,7 +182,7 @@ private:
     size_t m_numberOfShishas;
     size_t m_numberOfAlcohols;
 
-    bool strCmp(const char* first, const char* second){
+    bool strCmp(const char* first, const char* second) const {
     
         size_t firstSize = strlen(first);
         size_t secondSize = strlen(second);
@@ -211,61 +208,61 @@ public:
         m_numberOfAlcohols = 0;
     }
 
+    int getNumberOfBaloons() const { return m_numberOfBaloons; }
+    int getNumberOfAlcohols() const { return m_numberOfAlcohols; }
+    int getNumberOfShishas() const { return m_numberOfShishas; }
+
     void addBallon(double ballonPrice, const char* ballonColor){
-        Baloon newBalloon(ballonPrice, ballonColor);
-        m_baloons[m_numberOfBaloons] = newBalloon;
+        m_baloons[m_numberOfBaloons].setColor(ballonColor);
+        m_baloons[m_numberOfBaloons].setPrice(ballonPrice);
         m_numberOfBaloons++;
     }   
 
     void addShisha(double shishaPrice, const char* shishaType, const char* shishaTaste){
-        Shisha newShisha(shishaPrice, shishaType, shishaTaste);
-        m_shishas[m_numberOfShishas] = newShisha;
+        m_shishas[m_numberOfShishas].setPrice(shishaPrice);
+        m_shishas[m_numberOfShishas].setType(shishaType);
+        m_shishas[m_numberOfShishas].setTaste(shishaTaste);
         m_numberOfShishas++;
     }
 
     void addAlcohol(double alcoholPrice, const char* alcoholName){
-        Alcohol newAlcohol(alcoholPrice, alcoholName);
-        m_alcohols[m_numberOfAlcohols] = newAlcohol;
+        m_alcohols[m_numberOfAlcohols].setPrice(alcoholPrice);
+        m_alcohols[m_numberOfAlcohols].setName(alcoholName);
         m_numberOfAlcohols++;
     }
     
     void removeBalloon(const char* color){
         for(int i = 0; i < m_numberOfBaloons; ++i){
             if(strCmp(m_baloons[i].getColor(), color)){
-                for(int j = i; j < m_numberOfBaloons - 1; ++j){
-                    m_baloons[j] = m_baloons[j+1];
-                }
-                i--;
-                m_numberOfBaloons--;
+                m_baloons[i].setPrice(m_baloons[m_numberOfBaloons - 1].getPrice());
+                m_baloons[i].setColor(m_baloons[m_numberOfBaloons - 1].getColor());
             }
         }
+        m_numberOfBaloons--;
     }
 
     void removeShisha(const char* type){
         for(int i = 0; i < m_numberOfShishas; ++i){
             if(strCmp(m_shishas[i].getType(), type)){
-                for(int j = i; j < m_numberOfShishas - 1; ++j){
-                    m_shishas[j] = m_shishas[j+1];
-                }
-                i--;
-                m_numberOfShishas--;
+                m_shishas[i].setPrice(m_shishas[m_numberOfShishas - 1].getPrice());
+                m_shishas[i].setType(m_shishas[m_numberOfShishas - 1].getType());
+                m_shishas[i].setTaste(m_shishas[m_numberOfShishas - 1].getTaste());
             }
         }
+        m_numberOfShishas--;
     }
 
     void removeAlcohol(const char* name){
         for(int i = 0; i < m_numberOfAlcohols; ++i){
             if(strCmp(m_alcohols[i].getName(), name)){
-                for(int j = i; j < m_numberOfAlcohols - 1; ++j){
-                    m_alcohols[j] = m_alcohols[j+1];
-                }
-                i--;
-                m_numberOfAlcohols--;
+                m_alcohols[i].setName(m_alcohols[m_numberOfAlcohols - 1].getName());
+                m_alcohols[i].setPrice(m_alcohols[m_numberOfAlcohols - 1].getPrice());
             }
         }
+        m_numberOfAlcohols--;   
     }
 
-    bool hasBalloonCheaperThan(int n){
+    bool hasBalloonCheaperThan(int n) const {
         for(int i = 0; i < m_numberOfBaloons; ++i){
             if(m_baloons[i].getPrice() < n){
                 return true;
@@ -275,7 +272,7 @@ public:
         return false;
     }
 
-    bool hasShishaWithTaste(const char* taste){
+    bool hasShishaWithTaste(const char* taste) const {
         for(int i = 0; i < m_numberOfShishas; ++i){
             if(strCmp(m_shishas[i].getTaste(), taste)){
                 return true;
@@ -285,7 +282,7 @@ public:
         return false;
     }
 
-    bool hasAlcoholBetween(int A, int B){
+    bool hasAlcoholBetween(int A, int B) const {
         for(int i = 0; i < m_numberOfAlcohols; ++i){
             if(m_alcohols[i].getPrice() >= A && m_alcohols[i].getPrice() <= B){
                 return true;
@@ -295,30 +292,55 @@ public:
         return false;
     }
 
-    void printBalloons(){
+    void printBalloons() const {
         for(int i = 0; i < m_numberOfBaloons; ++i){
             m_baloons[i].print();
             std::cout << std::endl;
         }
     }
 
-    void printAlcohols(){
+    void printAlcohols() const {
         for(int i = 0; i < m_numberOfAlcohols; ++i){
             m_alcohols[i].print();
             std::cout << std::endl;
         }
     }
 
-    void printShishas(){
+    void printShishas() const {
         for(int i = 0; i < m_numberOfShishas; ++i){
             m_shishas[i].print();
             std::cout << std::endl;
         }
     }
 
-    void printAll(){
+    void printAll() const {
         printBalloons();
         printShishas();
         printAlcohols();
     }
 };
+
+
+int main(){
+
+    NightClub nc;
+    nc.addBallon(2, "Pink");
+    nc.addBallon(2, "Pink");
+    std::cout << nc.getNumberOfBaloons() << std::endl;
+    nc.removeBalloon("Pink");
+    std::cout << nc.getNumberOfBaloons() << std::endl;
+    
+
+    nc.addAlcohol(5, "vino");
+    nc.addAlcohol(5, "vino");
+    std::cout << nc.getNumberOfAlcohols() << std::endl;
+    nc.removeAlcohol("vino");
+    std::cout << nc.getNumberOfAlcohols() << std::endl;
+
+    nc.addShisha(6, "ice", "ghjk");
+    std::cout << nc.getNumberOfShishas() << std::endl;
+    nc.removeShisha("ice");
+    std::cout << nc.getNumberOfShishas();
+
+    return 0;
+}

@@ -6,15 +6,14 @@ class Alcohol{
 
 private:    
     double m_price;
-    char* m_name; // marka
+    char* m_name;
 
 public: 
 
-    Alcohol() : m_price(0){
-        setName("");
-    };
+    Alcohol() : m_price(0), m_name(nullptr) {};
 
-    Alcohol(double price, const char* name) : m_price(price), m_name(nullptr) {
+    Alcohol(double price, const char* name) : m_name(nullptr) {
+        setPrice(price);
         setName(name);
     }
 
@@ -22,7 +21,7 @@ public:
         delete[] m_name;
     }
     
-    void print(){
+    void print() const{
         std::cout << "Price: " << m_price << "\nName: " << m_name << std::endl;
     }
     

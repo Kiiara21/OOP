@@ -10,12 +10,20 @@ struct MyArray{
 
 template <typename T>
 void pushBack(int newElement, MyArray<T>& array){
+    if(array.size >= MAX){
+        std::cout << "Array is full!";
+        return;
+    }
     std::cout << "Push back the element " << newElement << std::endl;
     array.elements[array.size++] = newElement;
 }
 
 template <typename T>
 void popBack(MyArray<T>& array){
+    if(array.size == 0){
+        std::cout <, "Array is empty!";
+        return;
+    }
     std::cout << "Pop the last element... " << std::endl;
     array.size--;
 }
@@ -31,11 +39,8 @@ T at(int index, MyArray<T>& array){
 }
 
 template <typename T>
-void empty(MyArray<T>& array){
-    if(array.size == 0){
-        std::cout << "Array is empty.\n";
-    }
-    else std::cout << "Array is not empty.\n";
+bool empty(MyArray<T>& array){
+    return array.size == 0;
 }
 
 template <typename T>
@@ -51,7 +56,7 @@ int main(){
 
     MyArray<int> array;
     array.size = 3;
-    array.elements = new int[100];
+    array.elements = new (std::nothrow) int[MAX];
 
     for(int i = 0; i < array.size; ++i){
         std::cin >> array.elements[i];
@@ -59,7 +64,7 @@ int main(){
 
     pushBack(4, array);
     print(array); 
-    empty(array);
+    std::cout << empty(array);
     std::cout << at(2, array) << std::endl;
     popBack(array);
     print(array); 

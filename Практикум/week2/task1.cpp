@@ -10,11 +10,11 @@ private:
 
 public:
     Baloon(){
-        setPrice(0);
-        setColor("");
+        m_price = 0;
+        m_color = nullptr;
     }
 
-    Baloon(double price, const char* color) : m_price(price), m_color(nullptr) {
+    Baloon(double price, const char* color) : m_color(nullptr) {
         setPrice(price);
         setColor(color);
     }

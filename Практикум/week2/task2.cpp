@@ -6,17 +6,15 @@ class Shisha{
 
 private:    
     double m_price;
-    char* m_type; // marka 
+    char* m_type;
     char* m_taste; 
 
 public: 
 
-    Shisha() : m_price(0){
-        setTaste("");
-        setType("");
-    };
+    Shisha() : m_price(0), m_type(nullptr), m_taste(nullptr){}
 
-    Shisha(double price, const char* type, const char* taste) : m_price(price), m_type(nullptr), m_taste(nullptr) {
+    Shisha(double price, const char* type, const char* taste) : m_type(nullptr), m_taste(nullptr) {
+        setPrice(price);
         setType(type);
         setTaste(taste);
     }
@@ -26,7 +24,7 @@ public:
         delete[] m_taste;
     }
     
-    void print(){
+    void print() const{
         std::cout << "Price: " << m_price << "\nType: " << m_type << "\nTaste: " << m_taste << std::endl;
     }
     

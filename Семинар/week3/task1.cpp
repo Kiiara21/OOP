@@ -1,63 +1,48 @@
 #include <iostream>
 
-
-
-class Complex{
+class Complex {
 
 private:
-
-    int m_a;
-    int m_b;
-    // int m_i;
+    int m_real;
+    int m_img;
 
 public:
+    Complex() : m_real(0), m_img(0) {}
 
-    Complex();
-    Complex(int a, int b /*, int i*/);
+    Complex(int real, int img) : m_real(real), m_img(img) {}
 
-    void setA(int a);
-    void setB(int b);
-    // void setI(int i); ??
+    int getReal() const { return m_real; }
+    int getImg() const { return m_img; }
 
-    int getA() const;
-    int getB() const;
-    // int getI() const; ??
+    void print() const {
+        if (m_img < 0)
+            if (m_img == -1)
+            {
+                std::cout << "The complex number is: " << m_real << "-i\n";
+            }
+            else
+                std::cout << "The complex number is: " << m_real << m_img << "i\n";
+        else if (m_img == 1){
+            std::cout << "The complex number is: " << m_real << " + i\n";
+        }
+        else
+            std::cout << "The complex number is: " << m_real << " + " << m_img << "i";
+    }
 
-    void print();
+    Complex sum(Complex &second){
+        Complex result(m_real + second.m_real, m_img + second.m_img);
+        return result;
+    }
+
+    Complex sub(Complex &second){
+        Complex result(m_real - second.m_real, m_img - second.m_img);
+        return result;
+    }
+
+    Complex mult(Complex &second){
+        int resultReal = m_real * second.m_real - m_img * second.m_img;
+        int resultImg = m_img * second.m_real + m_real * second.m_img;
+        Complex result(resultReal, resultImg);
+        return result;
+    }
 };
-
-Complex sumComplex(Complex firstComplexNumber, Complex secondComplexNumber){
-    Complex result;
-    result.setA(firstComplexNumber.getA() + secondComplexNumber.getA());
-    result.setB(firstComplexNumber.getB() + secondComplexNumber.getB());
-    // result.setI(firstComplexNumber.getI()); ??
-
-    return result;
-}
-
-Complex diffComplex(Complex firstComplexNumber, Complex secondComplexNumber){
-    Complex result;
-    result.setA(firstComplexNumber.getA() - secondComplexNumber.getA());
-    result.setB(firstComplexNumber.getB() - secondComplexNumber.getB());
-    // result.setI(firstComplexNumber.getI()); ??
-
-    return result;
-}
-
-Complex multComplex(Complex firstComplexNumber, Complex secondComplexNumber){
-    Complex result;
-    result.setA( (firstComplexNumber.getA() * secondComplexNumber.getA() - firstComplexNumber.getB() * secondComplexNumber.getB()) 
-                +(firstComplexNumber.getB() * secondComplexNumber.getA() + firstComplexNumber.getA() * secondComplexNumber.getB()) );
-    
-    // fix it
-    // result.setB(firstComplexNumber.getB() + secondComplexNumber.getB());
-    // result.setI(firstComplexNumber.getI()); ??
-
-    return result;
-}
-
-int main(){
-
-
-    return 0;
-}
