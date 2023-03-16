@@ -81,23 +81,68 @@ public:
     //     sort(m_elements);
     //     print();
     // }
+
+    Dictionary operator+(Dictionary& other){
+        Dictionary result;
+
+        if(m_size + other.m_size > 500){
+            while(m_size + other.m_size < 500){
+                other.m_size--;
+                if(other.m_size == 0){
+                    m_size--;
+                }
+            }
+        } 
+
+        if(m_size == other.m_size){
+            for(int i = 0; i < m_size; ++i){
+                result.addElement(m_elements[i]);
+                result.addElement(other.m_elements[i]);
+            }
+        }
+
+        else if(m_size < other.m_size){
+            for(int i = 0; i < m_size; ++i){
+                result.addElement(m_elements[i]);
+                result.addElement(other.m_elements[i]);
+            }
+            for(int i = m_size; i < other.m_size; ++i){
+                result.addElement(other.m_elements[i]);
+            }
+        }
+
+        else if(other.m_size < m_size){
+            for(int i = 0; i < other.m_size; ++i){
+                result.addElement(m_elements[i]);
+                result.addElement(other.m_elements[i]);
+            }
+            for(int i = other.m_size; i < m_size; ++i){
+                result.addElement(m_elements[i]);
+            }
+        }
+        result.m_size = m_size + other.m_size;
+        return result;
+    }
 };
 
 int main(){
-    DictionaryElement elem1;
+    DictionaryElement elem1, elem2;
     strcpy(elem1.word, "bla");
     strcpy(elem1.value, "vla");
 
+    strcpy(elem2.word, "blabla");
+    strcpy(elem2.value, "vlavla");
+
     Dictionary dict;
     dict.addElement(elem1);
-    dict.print();
-    std::cout << dict.getSize();
-    dict.findValue("bla");
-    dict.removeElement("bla");
-    dict.print();
-    std::cout << std::endl << dict.getSize();
-    dict.findValue("bla");
-    
+
+    Dictionary dict2, dict3;
+    dict2.addElement(elem2);
+    dict2.addElement(elem1);
+
+    dict3 = dict + dict2;
+    std::cout << dict3.getSize();
+    dict3.print();
 
     return 0;
 }
