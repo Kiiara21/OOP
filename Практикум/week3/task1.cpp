@@ -2,6 +2,7 @@
 #include <cstring>
 #include <cassert>
 #include "debug_new.h"
+#include <fstream>
 
 struct Duration{
     int minutes;
@@ -98,8 +99,14 @@ public:
         std::cout << m_name << " " << m_duration.minutes << ":" << m_duration.seconds << " " << m_genre << std::endl;
     }
 
+    friend std::ostream& operator<<(std::ostream& out, const Song& song);
+
 };
 
+std::ostream& operator<<(std::ostream& out, const Song& song){
+    out << song.m_name << " " << song.m_genre << "\n";
+    return out;
+}
 
 const int INITIAL_CAPACITY = 2;
 const int INCREASE_STEP = 2;
@@ -241,6 +248,17 @@ public:
         }
         return false;
     }
+
+    Song& operator[](unsigned int index){
+        assert(index <= m_numberOfSongs);
+        return m_songs[index];
+    }
+
+    Song& operator[](unsigned int index) const{
+        assert(index <= m_numberOfSongs);
+        return m_songs[index];
+    }
+
 };
 
 int main(){
@@ -258,6 +276,10 @@ int main(){
     p1.printPlaylistInfo();
     p1.removeSong("bla");
     p1.printPlaylistInfo();
+
+    std::cout << "result from operator[]: " << p1[1];
+    p1[1] = p1[0];
+    std::cout << "result from operator[]: " << p1[1];
 
     checkMemoryLeaks();
     return 0;
