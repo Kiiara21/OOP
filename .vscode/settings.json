@@ -46,7 +46,20 @@
         "typeinfo": "cpp",
         "fstream": "cpp",
         "cstring": "cpp",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "unordered_set": "cpp",
+        "stop_token": "cpp",
+        "thread": "cpp",
+        "chrono": "cpp",
+        "condition_variable": "cpp",
+        "csignal": "cpp",
+        "ctime": "cpp",
+        "map": "cpp",
+        "set": "cpp",
+        "ratio": "cpp",
+        "iomanip": "cpp",
+        "mutex": "cpp",
+        "semaphore": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }
