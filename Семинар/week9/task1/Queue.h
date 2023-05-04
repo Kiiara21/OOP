@@ -9,6 +9,7 @@ private:
 
     static const size_t INITIAL_CAPACITY = 2;
     static const size_t INCREASE_STEP = 2;  
+    static const int INVALID_VALUE = -100;
 
 private:    
 
@@ -50,10 +51,7 @@ public:
 template <typename T>
 void Queue<T>::resize(){
     T* newElements = new (std::nothrow) T[m_capacity * INCREASE_STEP];
-    if(!newElements){
-        std::cout << "throw exception!";
-        return;
-    }
+    if(!newElements) throw std::bad_alloc();
 
     for(int i = 0; i < m_size; ++i){
         newElements[i] = m_elemens[i];
@@ -66,17 +64,16 @@ void Queue<T>::resize(){
 
 template <typename T>
 void Queue<T>::erase(){
-    m_front = -100;
-    m_back = -100;
+    m_front = INVALID_VALUE;
+    m_back = INVALID_VALUE;
     delete[] m_elemens;
 }
 
 template <typename T>
 void Queue<T>::copy(const Queue& other){
     m_elemens = new (std::nothrow) T[other.m_capacity];
-    if(!m_elemens){
-        return;
-    }
+    if(!m_elemens) throw std::bad_alloc();
+
     for(int i = 0; i < other.m_size; ++i){
         m_elemens[i] = other.m_elemens[i];
     }
@@ -100,12 +97,11 @@ bool Queue<T>::isFull(){
 template <typename T>
 Queue<T>::Queue(){
     m_elemens = new (std::nothrow) T [INITIAL_CAPACITY];
-    if(!m_elemens){
-        return;
-    }
+    if(!m_elemens) throw std::bad_alloc();
+
     m_size = 0;
     m_capacity = INITIAL_CAPACITY;
-    m_front = m_back = -100;
+    m_front = m_back = INVALID_VALUE;
 }
 
 template <typename T>
@@ -129,9 +125,11 @@ Queue<T>& Queue<T>::operator=(const Queue& other){
 
 template <typename T>
 T Queue<T>::dequeue(){
-    T lastElement = -100;
+    if (m_size == 0) throw std::out_of_range("Dont have elements in the queue");
+
+    T lastElement = INVALID_VALUE;
     if(m_size == 1){
-        m_back = m_front = -100;
+        m_back = m_front = INVALID_VALUE;
         lastElement = m_elemens[0];
     }
     else
@@ -144,6 +142,7 @@ T Queue<T>::dequeue(){
 
 template <typename T>
 void Queue<T>::enqueue(T newElement){   
+
     if(isFull()){
         resize();
     }
@@ -159,10 +158,8 @@ void Queue<T>::enqueue(T newElement){
 
 template <typename T>
 T Queue<T>::peek(){
-    if(isEmpty()){
-        std::cout << "Queue is empty!";
-        return -100;
-    }
+    if(isEmpty()) throw std::out_of_range("The queue is empty!");
+    
     return m_elemens[m_size - 1];
 }	
 
@@ -170,7 +167,7 @@ T Queue<T>::peek(){
 template <typename T>
 T Queue<T>::front() {
     if(isEmpty()){
-        m_front = -100;
+        m_front = INVALID_VALUE;
     }
     return m_front;
 }
@@ -178,7 +175,7 @@ T Queue<T>::front() {
 template <typename T>
 T Queue<T>::back(){
     if(isEmpty()){
-        m_back = -100;
+        m_back = INVALID_VALUE;
     }
     return m_back;
 }
