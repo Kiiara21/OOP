@@ -1,29 +1,49 @@
-#pragma once
-#include <fstream>
-#include <iostream>
-#include "cell.h"
+// #pragma once
+// #include <vector>
+// #include "Row.h"
+// using std::vector;
 
-const size_t INITIAL_ROWS = 2;
-const size_t INITIAL_COLS = 2;
+// class Table {
 
-class Table {
+// private:
 
-private:
+//     vector <Row> m_rows;
 
-    Cell** m_table;
-    unsigned int m_rows, m_cols;
+// public: 
 
-    void copy(const Table& other);
-    void erase();
+//     Table() = default;
 
-public:
+//     void addCell(const int rowToAddIn, const Cell& cellToAdd);
+//     void removeCell(const int rowToAddIn, const unsigned int id);
+     
+//     void printTable() const;
 
-    Table();
-    Table(const Table& other);
-    Table& operator=(const Table& other);
-    ~Table();
+//     size_t getSize() const { return m_rows.size(); }
+// }; 
 
-    friend std::ostream& operator << (std::ostream& out, const Table& table);
-    friend std::istream& operator >> (std::istream& in, Table& table);
+// void Table::addCell(const int rowToAddIn, const Cell& cellToAdd){
+//     size_t size = getSize();
+//     for(int i = 0; i < size; ++i){
+//         if(i == rowToAddIn){
+//             m_rows[i].addCell(cellToAdd);
+//         }
+//     }
+// }
 
-}; 
+// void Table::removeCell(const int rowToRemoveFrom, const unsigned int id){
+//     size_t size = getSize();
+//     for(int i = 0; i < size; ++i){
+//         if(i == rowToAddIn){
+//             m_rows[i].removeCell(id);
+//         }
+//     }
+// }
+
+
+// void Table::printTable() const{
+//     size_t size = getSize();
+//     for(int i = 0; i < size; ++i){
+//         m_rows[i].printRow();
+//     }
+// }
+

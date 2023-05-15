@@ -1,0 +1,1 @@
+enum class TypeChairSet {Wooden, Metal, Plastic};

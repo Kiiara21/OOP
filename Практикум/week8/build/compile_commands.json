@@ -1,0 +1,38 @@
+[
+{
+  "directory": "C:/Users/Yoga 370/Desktop/study/gitRepo/OOP/Практикум/week8/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -o CMakeFiles\\week8.dir\\main.cpp.obj -c \"C:\\Users\\Yoga 370\\Desktop\\study\\gitRepo\\OOP\\Практикум\\week8\\main.cpp\"",
+  "file": "C:/Users/Yoga 370/Desktop/study/gitRepo/OOP/Практикум/week8/main.cpp",
+  "output": "CMakeFiles/week8.dir/main.cpp.obj"
+},
+{
+  "directory": "C:/Users/Yoga 370/Desktop/study/gitRepo/OOP/Практикум/week8/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -o CMakeFiles\\week8.dir\\Alcohol.cpp.obj -c \"C:\\Users\\Yoga 370\\Desktop\\study\\gitRepo\\OOP\\Практикум\\week8\\Alcohol.cpp\"",
+  "file": "C:/Users/Yoga 370/Desktop/study/gitRepo/OOP/Практикум/week8/Alcohol.cpp",
+  "output": "CMakeFiles/week8.dir/Alcohol.cpp.obj"
+},
+{
+  "directory": "C:/Users/Yoga 370/Desktop/study/gitRepo/OOP/Практикум/week8/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -o CMakeFiles\\week8.dir\\Drink.cpp.obj -c \"C:\\Users\\Yoga 370\\Desktop\\study\\gitRepo\\OOP\\Практикум\\week8\\Drink.cpp\"",
+  "file": "C:/Users/Yoga 370/Desktop/study/gitRepo/OOP/Практикум/week8/Drink.cpp",
+  "output": "CMakeFiles/week8.dir/Drink.cpp.obj"
+},
+{
+  "directory": "C:/Users/Yoga 370/Desktop/study/gitRepo/OOP/Практикум/week8/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -o CMakeFiles\\week8.dir\\Food.cpp.obj -c \"C:\\Users\\Yoga 370\\Desktop\\study\\gitRepo\\OOP\\Практикум\\week8\\Food.cpp\"",
+  "file": "C:/Users/Yoga 370/Desktop/study/gitRepo/OOP/Практикум/week8/Food.cpp",
+  "output": "CMakeFiles/week8.dir/Food.cpp.obj"
+},
+{
+  "directory": "C:/Users/Yoga 370/Desktop/study/gitRepo/OOP/Практикум/week8/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -o CMakeFiles\\week8.dir\\Menu.cpp.obj -c \"C:\\Users\\Yoga 370\\Desktop\\study\\gitRepo\\OOP\\Практикум\\week8\\Menu.cpp\"",
+  "file": "C:/Users/Yoga 370/Desktop/study/gitRepo/OOP/Практикум/week8/Menu.cpp",
+  "output": "CMakeFiles/week8.dir/Menu.cpp.obj"
+},
+{
+  "directory": "C:/Users/Yoga 370/Desktop/study/gitRepo/OOP/Практикум/week8/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -o CMakeFiles\\week8.dir\\MenuItem.cpp.obj -c \"C:\\Users\\Yoga 370\\Desktop\\study\\gitRepo\\OOP\\Практикум\\week8\\MenuItem.cpp\"",
+  "file": "C:/Users/Yoga 370/Desktop/study/gitRepo/OOP/Практикум/week8/MenuItem.cpp",
+  "output": "CMakeFiles/week8.dir/MenuItem.cpp.obj"
+}
+]
