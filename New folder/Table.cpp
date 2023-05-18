@@ -1,79 +1,60 @@
 #include "Table.h"
 
-void Table::resize(){
-    Row** newTable = new Row*[m_capacity * INCREASE_STEP];
-    for(int i = 0; i < m_numberOfRows; ++i){
-        newTable[i] = m_table[i];
+void Table::addRow(Row* row) {
+    m_table.push_back(row);
+}
+
+void Table::printTable() const {
+    for (const Row* row : m_table) {
+        row->printRow();
     }
-
-    delete[] m_table;
-    m_table = newTable;
-    m_capacity *= INCREASE_STEP;
+    std::cout << std::endl;
 }
 
-void Table::copy(const Table& other){
-    m_table = new Row*[other.m_capacity];
-    for(int i = 0; i < m_numberOfRows; ++i){
-        m_table[i] = other.m_table[i];
+void Table::serializeTable(const std::string& fileName) {
+    std::ofstream outputFile(fileName, std::ios::binary);
+    if (outputFile.is_open()) {
+        for(int i = 0; i < m_table.size(); ++i){
+            m_table[i]->serializeRow(fileName);
+        }
+        outputFile.close();
     }
-    m_numberOfRows = other.m_numberOfRows;
-    m_capacity = other.m_capacity;
-}
-
-void Table::erase(){
-    for(int i = 0; i < m_numberOfRows; ++i){
-        delete m_table[i];
+    else {
+        std::cout << "Failed to open the file for writing" << std::endl;
     }
-    delete[] m_table;
 }
 
-Table::Table(){
-    m_table = new Row*[INITIAL_CAPACITY];
-    m_numberOfRows = 0;
-    m_capacity = INITIAL_CAPACITY;
-}
 
-Table::~Table(){
-    erase();
-}
-
-Table::Table(const Table& other){
-    copy(other);
-}
-
-Table::Table(const Table&& other){
-    m_table = std::move(other.m_table);
-    m_capacity = other.m_capacity;
-    m_numberOfRows = other.m_numberOfRows;
-}
-
-Table& Table::operator=(const Table& other){
-    if(&other != this){
-        erase();
-        copy(other);
+size_t countLinesInFile(const std::string& fileName) {
+    std::ifstream inputFile(fileName);
+    if (inputFile.is_open()) {
+        size_t lineCount = 0;
+        std::string line;
+        while (std::getline(inputFile, line)) {
+            lineCount++;
+        }
+        inputFile.close();
+        return lineCount;
+    } else {
+        std::cout << "Failed to open the file for readng" << std::endl;
+        return 0; 
     }
-
-    return *this;
 }
 
-Table& Table::operator=(const Table&& other){
-    if(&other != this){
-        m_table = std::move(other.m_table);
-        m_numberOfRows = other.m_numberOfRows;
-        m_capacity = other.m_capacity;
+void Table::deserializeTable(const std::string& fileName) {
+    size_t numberOfRows = countLinesInFile(fileName);
+    std::cout << numberOfRows << "\n";
+    std::ifstream inputFile(fileName);
+    if (inputFile.is_open()) {
+    std::cout << m_table.size();
+        for(int i = 0; i < numberOfRows; ++i){
+            Row* row = new Row; 
+            deserializeRow(fileName, *row);
+            addRow(row);
+        }
+        inputFile.close();
     }
-    return *this;
-}   
-
-void Table::addRow(Row *rowToAdd){
-    if(m_numberOfRows == m_capacity){
-        resize();
-    }
-    m_table[m_numberOfRows++] = rowToAdd;
-}
-
-void Table::writeTableInFile(const std::string& fileName){
-    for(int i = 0; i < m_numberOfRows; ++i){
-        m_table[i]->writeRowToFile(fileName);
+    else {
+        std::cout << "Failed to open the file for reading" << std::endl;
     }
 }

@@ -1,39 +1,20 @@
 #pragma once
 #include "Row.h"
+#include <vector>
 
-class Table{
-
+class Table {
 private:
-
-    Row** m_table;
-    size_t m_numberOfRows;
-    size_t m_capacity;
-    
-    static const size_t INITIAL_CAPACITY = 2;
-    static const size_t INCREASE_STEP = 2;
-
-    void resize();
-
-    void copy(const Table& other);
-
-    void erase();
+    std::vector<Row*> m_table;
 
 public:
 
-    Table();
+    void addRow(Row* row);
 
-    ~Table();
+    void printTable() const;
 
-    Table(const Table& other);
-    Table(const Table&& other);
+    const std::vector<Row*>& getTable() const { return m_table; }
 
-    Table& operator=(const Table& other);
-    Table& operator=(const Table&& other);
-    
-    void addRow(Row *rowToAdd);
+    void serializeTable(const std::string& fileName);
 
-    void writeTableInFile(const std::string& fileName);
-
-    size_t getSize() const { return m_numberOfRows; }
-    
+    void deserializeTable(const std::string& fileName);
 };

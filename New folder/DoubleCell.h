@@ -8,12 +8,18 @@ private:
     double m_data;
 
 public:
+    DoubleCell() : m_data(0.0) {}
 
     DoubleCell(const double data);
 
     virtual Cell* clone() override final;
 
+    virtual std::string getValueAsString() const override final {return std::to_string(m_data); }
+
     void print() const override final;
 
-    void writeToFile(const std::string& fileName) override final;
+    void serializeCell(const std::string& fileName) override final;
+
+    friend std::istream& operator>>(std::istream& in, DoubleCell& cell);
+
 };

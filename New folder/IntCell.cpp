@@ -10,11 +10,17 @@ void IntCell::print() const{
     std::cout << m_data;
 }
 
-void IntCell::writeToFile(const std::string& fileName){
+void IntCell::serializeCell(const std::string& fileName){
     std::ofstream file(fileName, std::ios::app);
     if(!file.is_open()){
         std::cout << "catch ex";
         return;
     }
-    file << m_data << "|";
+    file << m_data << ",";
 }
+
+std::istream& operator>>(std::istream& in, IntCell& cell){
+    in >> cell.m_data;
+    return in;
+}
+

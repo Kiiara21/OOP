@@ -1,4 +1,5 @@
 #include "Table.h"
+#include "Row.h"
 #include <sstream>
 
 // void readTableFromFile(const std::string& fileName, Table& table){
@@ -28,19 +29,26 @@ int main(){
 
     row1.addDoubleCell(1.2);
     row1.addIntCell(1);
-    row1.AddEmptyCell();
+    row1.addEmptyCell();
     row1.addStringCell("sdf");
 
     row2.addDoubleCell(1.2);
     row2.addIntCell(1);
-    row2.AddEmptyCell();
+    row2.addEmptyCell();
     row2.addStringCell("sdf");
 
+    // row1.printRow();
+    // row2.printRow();
     Table table;
 
     table.addRow(&row1);
     table.addRow(&row2); 
 
-    table.writeTableInFile("output.txt");
+    table.serializeTable("output.txt");
+
+    Table table2;
+    table2.deserializeTable("output.txt");
+    table2.printTable();
+
     return 0;
 }

@@ -1,7 +1,7 @@
 #include "Cell.h"
 
 Cell::Cell(){
-    emptyString = "";
+    m_emptyString = "";
 }
 
 Cell* Cell::clone(){
@@ -9,14 +9,20 @@ Cell* Cell::clone(){
 }
 
 void Cell::print() const{
-    std::cout << emptyString;
+    std::cout << m_emptyString;
 }
 
-void Cell::writeToFile(const std::string& fileName) {
+void Cell::serializeCell(const std::string& fileName) {
     std::ofstream file(fileName, std::ios::app);
     if(!file.is_open()){
         std::cout << "catch ex";
         return;
     }
-    file << emptyString << "|";
+    file << m_emptyString << ",";
 }
+
+std::istream& operator>>(std::istream& in, Cell& cell){
+    in >> cell.m_emptyString;
+    return in;
+}
+
