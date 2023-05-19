@@ -1,9 +1,10 @@
 #pragma once
 #include "Row.h"
-#include <vector>
 
 class Table {
+
 private:
+
     std::vector<Row*> m_table;
 
 public:

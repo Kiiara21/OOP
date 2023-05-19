@@ -16,7 +16,10 @@ void StringCell::serializeCell(const std::string& fileName){
         std::cout << "catch ex";
         return;
     }
-    file << m_data << ",";
+    if(Utils::isEmptyString(m_data) || Utils::isInteger(m_data) || Utils::isDouble(m_data)){
+        file << m_data << ",";
+    }
+    std::cout << "Invalid string data!";
 }
 
 std::istream& operator>>(std::istream& in, StringCell& cell){

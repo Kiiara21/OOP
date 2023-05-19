@@ -1,4 +1,5 @@
 #include "Table.h"
+#include "Utils.h"
 
 void Table::addRow(Row* row) {
     m_table.push_back(row);
@@ -24,25 +25,8 @@ void Table::serializeTable(const std::string& fileName) {
     }
 }
 
-
-size_t countLinesInFile(const std::string& fileName) {
-    std::ifstream inputFile(fileName);
-    if (inputFile.is_open()) {
-        size_t lineCount = 0;
-        std::string line;
-        while (std::getline(inputFile, line)) {
-            lineCount++;
-        }
-        inputFile.close();
-        return lineCount;
-    } else {
-        std::cout << "Failed to open the file for readng" << std::endl;
-        return 0; 
-    }
-}
-
 void Table::deserializeTable(const std::string& fileName) {
-    size_t numberOfRows = countLinesInFile(fileName);
+    size_t numberOfRows = Utils::countLinesInFile(fileName);
     std::cout << numberOfRows << "\n";
     std::ifstream inputFile(fileName);
     if (inputFile.is_open()) {

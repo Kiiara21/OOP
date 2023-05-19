@@ -15,10 +15,6 @@ void Row::erase() {
     m_row.clear();
 }
 
-void Row::add(Cell* cell) {
-    m_row.push_back(cell);
-}
-
 Row::Row(const Row& other) {
     copy(other);
 }
@@ -37,6 +33,10 @@ Row::Row() {
 
 Row::~Row() {
     erase();
+}
+
+void Row::add(Cell* cell) {
+    m_row.push_back(cell);
 }
 
 void Row::addEmptyCell() {
@@ -58,6 +58,7 @@ void Row::addDoubleCell(const double& data) {
 void Row::printRow() const {
     for (const Cell* cell : m_row) {
         cell->print();
+        std::cout << " | ";
     }
     std::cout << std::endl;
 }
@@ -74,38 +75,12 @@ void Row::serializeRow(const std::string& fileName){
     file << "\n";
 }
 
-
-bool isInteger(const std::string& str) {
-    if (str.empty() || ((!isdigit(str[0])) && (str[0] != '-') && (str[0] != '+')))
-        return false;
-
-    char* endPtr = nullptr;
-    strtol(str.c_str(), &endPtr, 10);
-
-    return (*endPtr == '\0');
-}
-
-bool isDouble(const std::string& str) {
-    if (str.empty() || ((!isdigit(str[0])) && (str[0] != '-') && (str[0] != '+')))
-        return false;
-
-    char* endPtr = nullptr;
-    strtod(str.c_str(), &endPtr);
-
-    return (*endPtr == '\0');
-}
-
-bool isEmptyString(const std::string& str){
-    return str.empty();
-}
-
-
-void deserializeRow(const std::string& fileName, Row& row) {
+std::vector<std::string> rowElements(const std::string& fileName, Row& row){
     row.erase();
-    std::ifstream inputFile(fileName, std::ios::binary);
+    std::vector<std::string> words;
+    std::ifstream inputFile(fileName);
     if (inputFile.is_open()) {
         
-        std::vector<std::string> words;
         std::string line;
 
         while (std::getline(inputFile, line)) {
@@ -113,39 +88,68 @@ void deserializeRow(const std::string& fileName, Row& row) {
             std::string word;
 
             while (std::getline(ss, word, ',')) {
+                std::cout << word << std::endl;
                 words.push_back(word);
             }
         }
 
         inputFile.close();
-
-        for (const auto& word : words) {
-            if (word != "\n"){
-                if (isEmptyString(word)){
-                    Cell* cell = new Cell(); 
-                    row.add(cell);
-                    // std::cout << "\nadding empty cell... ---> " << word;
-                }
-                else if(isInteger(word)){
-                    Cell* cell = new IntCell(std::stoi(word)); 
-                    row.add(cell);
-                    // std::cout << "\nadding int cell... ---> " << word;
-                }
-                else if (isDouble(word)){
-                    Cell* cell = new DoubleCell(std::stod(word)); 
-                    row.add(cell);
-                    // std::cout << "\nadding double cell... ---> " << word;
-                }
-                else {
-                    Cell* cell = new StringCell(word); 
-                    row.add(cell);
-                    // std::cout << "\nadding string cell... ---> " << word;
-                }
-                // todo if word is a formula
-            }
-        }
-    }
+        
+    }   
     else {
         std::cout << "Failed to open the file for reading." << std::endl;
     }
+
+    return words;
+} // todo fix it
+
+void deserializeRow(const std::string& fileName, Row& row) {
+    
+    std::vector<std::string> words = rowElements(fileName, row);
+
+    // std::cout << words.size() << std::endl;
+
+    for (int i = 0; i < words.size(); ++i) {
+        if (words[i] != "\n"){
+            if (Utils::isEmptyString(words[i])){
+                Cell* cell = new Cell(); 
+                row.add(cell);
+                std::cout << "\nadding empty cell... ---> " << words[i];
+            }
+            else if(Utils::isInteger(words[i])){
+                if (Utils::hasSign(words[i]) && Utils::isNegative(words[i])){
+                    Cell* cell = new IntCell(0 - std::stoi(words[i])); 
+                    row.add(cell);
+                    std::cout << "\nadding negative int cell... ---> " << words[i];
+                }
+                else {
+                    Cell* cell = new IntCell(std::stoi(words[i])); 
+                    row.add(cell);
+                    std::cout << "\nadding int cell... ---> " << words[i];
+                }
+            }
+            else if (Utils::isDouble(words[i])){
+                if (Utils::hasSign(words[i]) && Utils::isNegative(words[i])){
+                    Cell* cell = new DoubleCell(0 - std::stod(words[i])); 
+                    row.add(cell);
+                    std::cout << "\nadding negative double cell... ---> " << words[i];
+                }
+                else {
+                    Cell* cell = new DoubleCell(std::stod(words[i])); 
+                    row.add(cell);
+                    std::cout << "\nadding double cell... ---> " <<words[i];
+                }
+            }
+            else {
+                if (Utils::isEmptyString(words[i]) || Utils::isInteger(words[i]) || Utils::isDouble(words[i])){
+                    Cell* cell = new StringCell(words[i]); 
+                    row.add(cell);
+                    std::cout << "\nadding string cell... ---> " << words[i];
+                }
+                else std::cout << "\nUnvalid data in column " << i;
+            }
+            // todo if word is a formula
+        }
+    }
+
 }

@@ -35,6 +35,8 @@ public:
 
     void serializeRow(const std::string& fileName);
 
+    friend std::vector<std::string> rowElements(const std::string& fileName, Row& row);
+
     friend void deserializeRow(const std::string& fileName, Row& row);
 
 };
