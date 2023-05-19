@@ -141,15 +141,23 @@ void deserializeRow(const std::string& fileName, Row& row) {
                 }
             }
             else {
-                if (Utils::isEmptyString(words[i]) || Utils::isInteger(words[i]) || Utils::isDouble(words[i])){
-                    Cell* cell = new StringCell(words[i]); 
-                    row.add(cell);
-                    std::cout << "\nadding string cell... ---> " << words[i];
-                }
-                else std::cout << "\nUnvalid data in column " << i;
+                Cell* cell = new StringCell(words[i]); 
+                row.add(cell);
+                std::cout << "\nadding string cell... ---> " << words[i];
             }
             // todo if word is a formula
         }
     }
 
+}
+
+
+Cell* Row::operator[](size_t index){
+    assert(index < m_row.size());
+    return m_row[index];
+}
+
+const Cell* Row::operator[](size_t index) const{
+    assert(index < m_row.size());
+    return m_row[index];
 }

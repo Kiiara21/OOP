@@ -27,7 +27,7 @@ bool Utils::isInteger(const std::string& str) {
 }
 
 bool Utils::isDouble(const std::string& str) {
-    if (str.empty() || ((!isdigit(str[0])) && (str[0] != '-') && (str[0] != '+')))
+    if (str.empty() || ((!isdigit(str[0])) && (str[0] != '-') && (str[0] != '+')) || isInteger(str))
         return false;
 
     char* endPtr = nullptr;
@@ -44,9 +44,8 @@ bool Utils::hasSign(const std::string& str){
     return str[0] == '-' || str[0] == '+';
 }
 
-
 bool Utils::isPositive(const std::string& str){
-    return str[0] == '+';
+    return (str[0] == '+' || !(hasSign(str)));
 }
 bool Utils::isNegative(const std::string& str){
     return str[0] == '-';

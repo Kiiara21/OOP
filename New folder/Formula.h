@@ -1,11 +1,11 @@
-#pragma once
-#include "Cell.h"
+// #pragma once
+// #include "Cell.h"
 
-class Formula : public Cell{
+// class Formula : public Cell{
 
-private:
+// private:
 
-public:
+// public:
 
 
-};
+// };

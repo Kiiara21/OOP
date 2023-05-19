@@ -1,1 +1,1 @@
--1.2,-1,,2.4,
+file.seekg(position + 11)

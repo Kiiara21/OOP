@@ -14,9 +14,9 @@ public:
 
     StringCell(const string data);
 
-    virtual Cell* clone() override final;
+    Cell* clone() override final;
 
-    virtual std::string getValueAsString() const override final { return m_data; }
+    std::string getValueAsString() const override final { return m_data; }
 
     void print() const override final;
 
