@@ -17,6 +17,9 @@ public:
     
     size_t getSize() const { return m_table.size(); }
 
+    Row* operator[](size_t index);
+    const Row* operator[](size_t index) const;
+
     void serializeTable(const std::string& fileName);
 
     void deserializeTable(const std::string& fileName);

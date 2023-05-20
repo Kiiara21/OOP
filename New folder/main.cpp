@@ -36,5 +36,6 @@ int main(){
     table2.deserializeTable("output.txt");
     std::cout << std::endl;
     checkMemoryLeaks();
+
     return 0;
 }

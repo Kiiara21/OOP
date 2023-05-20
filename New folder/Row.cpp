@@ -124,8 +124,6 @@ void Row::setElements(std::vector<std::string> rowElements){
     }
 }
 
-
-
 void deserializeRow(const std::string& fileName, Row& row) {
     row.erase();
     std::vector<std::string> words = row.rowElements(fileName);
@@ -169,9 +167,7 @@ void deserializeRow(const std::string& fileName, Row& row) {
             // todo if word is a formula
         }
     }
-
 }
-
 
 Cell* Row::operator[](size_t index){
     assert(index < m_row.size());

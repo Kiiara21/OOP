@@ -62,3 +62,14 @@ void Table::deserializeTable(const std::string& fileName) {
     }
     std::cout << "\nDeserialising table successful!";
 }
+
+
+Row* Table::operator[](size_t index){
+    assert(index < m_table.size());
+    return m_table[index];
+}
+
+const Row* Table::operator[](size_t index) const{
+    assert(index < m_table.size());
+    return m_table[index];
+}
