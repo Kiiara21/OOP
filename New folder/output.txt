@@ -1,1 +1,3 @@
-file.seekg(position + 11)
+-1.2,-1,,2.4,"Quoted",,
+44,12,,,
+,,,,

@@ -8,7 +8,7 @@ private:
     double m_data;
 
 public:
-    DoubleCell() : m_data(0.0) {}
+    DoubleCell() : Cell(), m_data(0.0) {}
 
     DoubleCell(const double data);
 

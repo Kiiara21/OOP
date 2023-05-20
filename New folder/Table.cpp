@@ -23,22 +23,42 @@ void Table::serializeTable(const std::string& fileName) {
     else {
         std::cout << "Failed to open the file for writing" << std::endl;
     }
+    std::cout << "\nSerialising table successful!";
 }
 
 void Table::deserializeTable(const std::string& fileName) {
-    size_t numberOfRows = Utils::countLinesInFile(fileName);
-    std::cout << numberOfRows << "\n";
     std::ifstream inputFile(fileName);
+    std::cout << "\nDeserializing table ... \n\n";
     if (inputFile.is_open()) {
-    std::cout << m_table.size();
-        for(int i = 0; i < numberOfRows; ++i){
-            Row* row = new Row; 
-            deserializeRow(fileName, *row);
+        std::string line;
+        
+        while (std::getline(inputFile, line)) {
+            std::vector<std::string> rowValues;
+            std::stringstream ss(line);
+            std::string value;
+            
+            while (std::getline(ss, value, ',')) {
+                rowValues.push_back(value);
+            }
+            
+            Row* row = new Row;
+            row->setElements(rowValues);
+            // std::cout << "\nnew row size: " << row->getSize() << std::endl;
+            // for (const Cell* cell : row->getCells()) {
+            //     if(Utils::isEmptyString(cell->getValueAsString())){
+            //         std::cout << "\nemtpy\n";
+            //     }
+            //     std::cout << cell->getValueAsString();
+            //     std::cout << " | ";
+            // }
+            std::cout << "\nAdding row in table...\n" << std::endl;
             addRow(row);
+            std::cout << getSize() << "\n";
         }
+        
         inputFile.close();
+    } else {
+        std::cout << "Failed to open the file for reading." << std::endl;
     }
-    else {
-        std::cout << "Failed to open the file for reading" << std::endl;
-    }
+    std::cout << "\nDeserialising table successful!";
 }

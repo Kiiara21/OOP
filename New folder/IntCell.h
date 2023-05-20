@@ -9,7 +9,7 @@ private:
 
 public:
 
-    IntCell() : m_data(0) {}
+    IntCell() : Cell(), m_data(0) {}
 
     IntCell(const int data);
 

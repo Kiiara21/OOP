@@ -14,6 +14,8 @@ public:
     void printTable() const;
 
     const std::vector<Row*>& getTable() const { return m_table; }
+    
+    size_t getSize() const { return m_table.size(); }
 
     void serializeTable(const std::string& fileName);
 

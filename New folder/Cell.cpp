@@ -9,6 +9,7 @@ Cell* Cell::clone(){
 }
 
 void Cell::print() const{
+    // std::cout << "\nprinting empty cell...";
     std::cout << m_emptyString;
 }
 

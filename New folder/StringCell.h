@@ -10,7 +10,7 @@ private:
 
 public:
 
-    StringCell() : m_data("") {}
+    StringCell() : Cell(), m_data("") {}
 
     StringCell(const string data);
 

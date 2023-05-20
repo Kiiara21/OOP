@@ -75,39 +75,60 @@ void Row::serializeRow(const std::string& fileName){
     file << "\n";
 }
 
-std::vector<std::string> rowElements(const std::string& fileName, Row& row){
-    row.erase();
+std::vector<std::string> Row::rowElements(const std::string& fileName) {
     std::vector<std::string> words;
     std::ifstream inputFile(fileName);
+    
     if (inputFile.is_open()) {
-        
         std::string line;
-
-        while (std::getline(inputFile, line)) {
+        if (std::getline(inputFile, line)) {
             std::stringstream ss(line);
             std::string word;
-
+            
             while (std::getline(ss, word, ',')) {
                 std::cout << word << std::endl;
                 words.push_back(word);
             }
         }
-
-        inputFile.close();
         
-    }   
-    else {
+        inputFile.close();
+    } else {
         std::cout << "Failed to open the file for reading." << std::endl;
     }
-
+    
     return words;
-} // todo fix it
+}
+
+void Row::setElements(std::vector<std::string> rowElements){
+    for (const std::string& value : rowElements){
+        if(Utils::isEmptyString(value)){
+            Cell* emptyCell;
+            std::cout << "Add empty cell -->" << value << "\n";
+            m_row.push_back(emptyCell);
+        }
+        else if(Utils::isInteger(value)){
+            IntCell* intCell = new IntCell(std::stoi(value));
+            std::cout << "Add int cell -->" << value << "\n";
+            m_row.push_back(intCell);
+        }
+        else if(Utils::isDouble(value)){
+            DoubleCell* doubleCell = new DoubleCell(std::stod(value));
+            std::cout << "Add double cell -->" << value << "\n";
+            m_row.push_back(doubleCell);
+        }
+        else {
+            StringCell* stringCell = new StringCell(value);
+            std::cout << "Add string cell -->" << value << "\n";
+            m_row.push_back(stringCell);
+        }
+    }
+}
+
+
 
 void deserializeRow(const std::string& fileName, Row& row) {
-    
-    std::vector<std::string> words = rowElements(fileName, row);
-
-    // std::cout << words.size() << std::endl;
+    row.erase();
+    std::vector<std::string> words = row.rowElements(fileName);
 
     for (int i = 0; i < words.size(); ++i) {
         if (words[i] != "\n"){
