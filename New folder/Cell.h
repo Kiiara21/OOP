@@ -4,19 +4,17 @@
 #include <string>
 #include <sstream>
 
-using std::string;
-
 class Cell {
 
 protected:
 
-    string m_emptyString;
+    std::string m_emptyString;
 
 public:
 
     Cell();
 
-    Cell(string emptyString) : m_emptyString(emptyString){}
+    Cell(std::string emptyString) : m_emptyString(emptyString){}
 
     virtual Cell* clone();
 
@@ -24,9 +22,10 @@ public:
 
     virtual std::string getValueAsString() const {return m_emptyString; }
 
-    virtual void serializeCell(const std::string& fileName);
+    virtual void serializeCell(std::ofstream& os);
 
     friend std::istream& operator>>(std::istream& in, Cell& cell);
 
     virtual ~Cell() = default;
+    
 };

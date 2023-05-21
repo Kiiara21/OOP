@@ -31,7 +31,7 @@ int main(){
     table.addRow(&row2); 
     table.addRow(&row3);
 
-    table.serializeTable("output.txt");
+    // table.serializeTable("output.txt");
 
     IO::menu();
 

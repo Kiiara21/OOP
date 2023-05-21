@@ -6,6 +6,7 @@
 #include"Utils.h"
 #include <vector>
 #include <cassert>
+#include <iomanip>
 
 class Row {
     
@@ -25,21 +26,23 @@ public:
     ~Row();
 
     void addEmptyCell();
-
     void addIntCell(const int& data);
-
     void addStringCell(const std::string& data);
-
     void addDoubleCell(const double& data);
+    
+    void addAtPosition(int index, Cell* newCell);
 
     const std::vector<Cell*>& getCells() { return m_row; };
     std::vector<std::string> getRowElements(const std::string& fileName);
+    const size_t getMaxCellSize();
+
     void setElements(std::vector<std::string> rowElement);
-    void printRow() const;
+    
+    void printRow(size_t offset) const;
 
-    void serializeRow(const std::string& fileName);
+    // void erase(int index); to do
 
-    // friend void deserializeRow(const std::string& fileName, Row& row);
+    void serializeRow(std::ofstream& os);
 
     Cell* operator[](size_t index);
     const Cell* operator[](size_t index) const;

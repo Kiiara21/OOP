@@ -8,6 +8,7 @@ private:
     double m_data;
 
 public:
+
     DoubleCell() : Cell(), m_data(0.0) {}
 
     DoubleCell(const double data);
@@ -18,7 +19,7 @@ public:
 
     void print() const override final;
 
-    void serializeCell(const std::string& fileName) override final;
+    void serializeCell(std::ofstream &os) override final;
 
     friend std::istream& operator>>(std::istream& in, DoubleCell& cell);
 

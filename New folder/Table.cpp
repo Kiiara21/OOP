@@ -6,22 +6,26 @@ void Table::addRow(Row* row) {
 }
 
 void Table::printTable() const {
+    size_t maxCellSizeOnRow = 0;
+
+    for (int i = 0 ; i < getSize(); ++i){
+        size_t currMaxSize = m_table[i]->getMaxCellSize();
+        if(currMaxSize > maxCellSizeOnRow){
+            maxCellSizeOnRow = currMaxSize;
+        }
+    }   
+
+    size_t offset = maxCellSizeOnRow;
+    
     for (const Row* row : m_table) {
-        row->printRow();
+        row->printRow(offset);
     }
     std::cout << std::endl;
 }
 
-void Table::serializeTable(const std::string& fileName) {
-    std::ofstream outputFile(fileName, std::ios::binary);
-    if (outputFile.is_open()) {
-        for(int i = 0; i < m_table.size(); ++i){
-            m_table[i]->serializeRow(fileName);
-        }
-        outputFile.close();
-    }
-    else {
-        std::cout << "Failed to open the file for writing" << std::endl;
+void Table::serializeTable(std::ofstream& os) {
+    for(int i = 0; i < m_table.size(); ++i){
+        m_table[i]->serializeRow(os);
     }
     std::cout << "\nSerialising table successful!\n\n";
 }
@@ -52,13 +56,27 @@ void Table::deserializeTable(std::ifstream &is) {
 }
 
 Row* Table::operator[](size_t index){
-    assert(index < m_table.size());
-    return m_table[index];
+    try {
+        if (index >= m_table.size()) {
+            throw std::out_of_range("\nInvalid index");
+        }
+        return m_table[index];
+    } catch (const std::out_of_range& e) {
+        std::cout << "\nError: " << e.what() << std::endl;
+        return nullptr;
+    }
 }
 
 const Row* Table::operator[](size_t index) const{
-    assert(index < m_table.size());
-    return m_table[index];
+    try {
+        if (index >= m_table.size()) {
+            throw std::out_of_range("\nInvalid index");
+        }
+        return m_table[index];
+    } catch (const std::out_of_range& e) {
+        std::cout << "\nError: " << e.what() << std::endl;
+        return nullptr;
+    }
 }
 
 void Table::clear(){

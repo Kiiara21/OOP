@@ -6,13 +6,13 @@ class StringCell : public Cell {
 
 private:
 
-    string m_data;
+    std::string m_data;
 
 public:
 
     StringCell() : Cell(), m_data("") {}
 
-    StringCell(const string data);
+    StringCell(const std::string data);
 
     Cell* clone() override final;
 
@@ -20,7 +20,7 @@ public:
 
     void print() const override final;
 
-    void serializeCell(const std::string& fileName) override final;
+    void serializeCell(std::ofstream& os) override final;
 
     friend std::istream& operator>>(std::istream& in, StringCell& cell);
 

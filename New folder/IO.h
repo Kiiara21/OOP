@@ -20,9 +20,10 @@ public:
     static void save();
     static void saveAs();
 
-    static void help();
-    
     static void print();
+
+    static void help();
     static void edit();
+
 
 };

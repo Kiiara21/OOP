@@ -13,13 +13,8 @@ void Cell::print() const{
     std::cout << m_emptyString;
 }
 
-void Cell::serializeCell(const std::string& fileName) {
-    std::ofstream file(fileName, std::ios::app);
-    if(!file.is_open()){
-        std::cout << "catch ex";
-        return;
-    }
-    file << m_emptyString << ",";
+void Cell::serializeCell(std::ofstream &os) {
+    os << m_emptyString << ",";
 }
 
 std::istream& operator>>(std::istream& in, Cell& cell){

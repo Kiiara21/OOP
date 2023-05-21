@@ -67,7 +67,6 @@ void Row::addIntCell(const int& data) {
     }
 }
 
-
 void Row::addDoubleCell(const double& data) {
     try {
         if (Utils::hasSign(std::to_string(data)) && Utils::isNegative(std::to_string(data))) {
@@ -91,24 +90,43 @@ void Row::addStringCell(const std::string& data) {
     }
 }
 
-void Row::printRow() const {
+void Row::addAtPosition(int index, Cell* newCell) {
+    try {
+        if (index > getSize()) {
+            throw std::out_of_range("Invalid index");
+        }
+
+        m_row.erase(m_row.begin() + index);
+        m_row.insert(m_row.begin() + index, newCell);
+    } 
+    catch (const std::out_of_range& e) {
+        std::cout << e.what() << std::endl;
+    }
+}
+ 
+void Row::printRow(size_t offset) const {
     for (const Cell* cell : m_row) {
+        // std::cout << "curr cell size:" << cell->getValueAsString().size();
+        int temp = (offset - cell->getValueAsString().size()) / 2;
+        // offset = cell->getValueAsString().size() / 2 - offset;
+
+        for(int i = 0; i < temp; ++i){
+            std::cout << " ";
+        }
+        std::cout << "|";
+        for(int i = 0; i < temp; ++i){
+            std::cout << " ";
+        }
         cell->print();
-        std::cout << " | ";
     }
     std::cout << std::endl;
 }
 
-void Row::serializeRow(const std::string& fileName){
-    std::ofstream file(fileName, std::ios::app);
-    if(!file.is_open()){
-        std::cout << "catch ex";
-        return;
-    }
+void Row::serializeRow(std::ofstream& os){
     for(int i = 0; i < m_row.size(); ++i){
-        m_row[i]->serializeCell(fileName);
+        m_row[i]->serializeCell(os);
     }
-    file << "\n";
+    os << "\n";
 }
 
 std::vector<std::string> Row::getRowElements(const std::string& fileName) {
@@ -135,6 +153,19 @@ std::vector<std::string> Row::getRowElements(const std::string& fileName) {
     return words;
 }
 
+const size_t Row::getMaxCellSize(){
+    size_t maxCellSize = 0;
+    for(Cell* cell : m_row){
+        size_t currCellSize = cell->getValueAsString().size();
+        std::cout << currCellSize << "\n"; 
+        if(currCellSize > maxCellSize){
+            maxCellSize = currCellSize;
+        }
+    }
+    return maxCellSize;
+}
+
+
 void Row::setElements(std::vector<std::string> rowElements){
     for (const std::string& value : rowElements){
         if(Utils::isEmptyString(value)){
@@ -152,12 +183,26 @@ void Row::setElements(std::vector<std::string> rowElements){
     }
 }
 
-Cell* Row::operator[](size_t index){
-    assert(index < m_row.size());
-    return m_row[index];
+Cell* Row::operator[](size_t index) {
+    try {
+        if (index >= m_row.size()) {
+            throw std::out_of_range("\nInvalid index");
+        }
+        return m_row[index];
+    } catch (const std::out_of_range& e) {
+        std::cout << "\nError: " << e.what() << std::endl;
+        return nullptr;
+    }
 }
 
 const Cell* Row::operator[](size_t index) const{
-    assert(index < m_row.size());
-    return m_row[index];
+    try {
+        if (index >= m_row.size()) {
+            throw std::out_of_range("\nInvalid index");
+        }
+        return m_row[index];
+    } catch (const std::out_of_range& e) {
+        std::cout << "\nError: " << e.what() << std::endl;
+        return nullptr;
+    }
 }
