@@ -1,8 +1,8 @@
 // #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 // #include "doctest.h"
-// #include "ValidateData.h"
-// #include "Utils.h" 
-// #include "Row.h"
+// #include "../Utils/ValidateData.h"
+// #include "../Utils/Utils.h" 
+// #include "../TableSource/Row.h"
 
 // TEST_SUITE("validation data tests"){
 //     TEST_CASE("Is number"){

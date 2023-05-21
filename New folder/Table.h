@@ -22,5 +22,7 @@ public:
 
     void serializeTable(const std::string& fileName);
 
-    void deserializeTable(const std::string& fileName);
+    void deserializeTable(std::ifstream &is);
+    
+    void clear();
 };

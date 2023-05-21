@@ -1,4 +1,5 @@
-#include "Table.h"
+// #include "Table.h"
+#include "IO.h"
 #include "debug_new.h"
 
 int main(){
@@ -32,10 +33,7 @@ int main(){
 
     table.serializeTable("output.txt");
 
-    Table table2;
-    table2.deserializeTable("output.txt");
-    std::cout << std::endl;
-    checkMemoryLeaks();
+    IO::menu();
 
     return 0;
 }
