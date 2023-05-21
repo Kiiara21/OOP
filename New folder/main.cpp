@@ -8,7 +8,7 @@ int main(){
     row1.addDoubleCell(-1.2);
     row1.addIntCell(-1);
     row1.addEmptyCell();
-    row1.addStringCell("2.4");
+    row1.addStringCell("-2.4.2");
     row1.addStringCell("\"Quoted\"");
     row1.addStringCell(""); // when add empty strig this will be empty cell
 

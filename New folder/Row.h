@@ -2,6 +2,7 @@
 #include "IntCell.h"
 #include "DoubleCell.h"
 #include "StringCell.h"
+#include "ValidateData.h"
 #include"Utils.h"
 #include <vector>
 #include <cassert>
@@ -32,13 +33,13 @@ public:
     void addDoubleCell(const double& data);
 
     const std::vector<Cell*>& getCells() { return m_row; };
-    std::vector<std::string> rowElements(const std::string& fileName);
+    std::vector<std::string> getRowElements(const std::string& fileName);
     void setElements(std::vector<std::string> rowElement);
     void printRow() const;
 
     void serializeRow(const std::string& fileName);
 
-    friend void deserializeRow(const std::string& fileName, Row& row);
+    // friend void deserializeRow(const std::string& fileName, Row& row);
 
     Cell* operator[](size_t index);
     const Cell* operator[](size_t index) const;

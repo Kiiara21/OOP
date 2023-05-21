@@ -36,23 +36,59 @@ Row::~Row() {
 }
 
 void Row::add(Cell* cell) {
-    m_row.push_back(cell);
+    std::string value = cell->getValueAsString();
+    if (Validate::isValidData(value)) {
+        m_row.push_back(cell);
+    } else {
+        throw std::invalid_argument("Invalid data!"); // Throw an exception with an error message
+    }
 }
 
 void Row::addEmptyCell() {
-    add(new Cell());
+    try {
+        add(new Cell());
+        std::cout << "\nadding empty cell... ---> ";
+    } catch (const std::exception& e) {
+        std::cout << "\nException caught: " << e.what() << std::endl;
+    }
 }
 
 void Row::addIntCell(const int& data) {
-    add(new IntCell(data));
+    try {
+        if (Utils::hasSign(std::to_string(data)) && Utils::isNegative(std::to_string(data))) {
+            add(new IntCell(data));
+            std::cout << "\nadding negative int cell... ---> " << data;
+        } else {
+            add(new IntCell(data));
+            std::cout << "\nadding int cell... ---> " << data;
+        }
+    } catch (const std::exception& e) {
+        std::cout << "\nException caught: " << e.what() << std::endl;
+    }
+}
+
+
+void Row::addDoubleCell(const double& data) {
+    try {
+        if (Utils::hasSign(std::to_string(data)) && Utils::isNegative(std::to_string(data))) {
+            add(new DoubleCell(data));
+            std::cout << "\nadding negative double cell... ---> " << data;
+        } else {
+            add(new DoubleCell(data));
+            std::cout << "\nadding double cell... ---> " << data;
+        }
+    } catch (const std::exception& e) {
+        std::cout << "\nException caught: " << e.what() << std::endl;
+    }
 }
 
 void Row::addStringCell(const std::string& data) {
-    add(new StringCell(data));
-}
-
-void Row::addDoubleCell(const double& data) {
-    add(new DoubleCell(data));
+    try {
+        add(new StringCell(data));
+        std::cout << "\nadding string cell... ---> " << data;
+    } catch (const std::exception& e) {
+        std::cout << "\nException caught: " << e.what() << std::endl;
+    }
 }
 
 void Row::printRow() const {
@@ -75,7 +111,7 @@ void Row::serializeRow(const std::string& fileName){
     file << "\n";
 }
 
-std::vector<std::string> Row::rowElements(const std::string& fileName) {
+std::vector<std::string> Row::getRowElements(const std::string& fileName) {
     std::vector<std::string> words;
     std::ifstream inputFile(fileName);
     
@@ -102,69 +138,16 @@ std::vector<std::string> Row::rowElements(const std::string& fileName) {
 void Row::setElements(std::vector<std::string> rowElements){
     for (const std::string& value : rowElements){
         if(Utils::isEmptyString(value)){
-            Cell* emptyCell;
-            std::cout << "Add empty cell -->" << value << "\n";
-            m_row.push_back(emptyCell);
+            addEmptyCell();
         }
         else if(Utils::isInteger(value)){
-            IntCell* intCell = new IntCell(std::stoi(value));
-            std::cout << "Add int cell -->" << value << "\n";
-            m_row.push_back(intCell);
+            addIntCell(std::stoi(value));
         }
         else if(Utils::isDouble(value)){
-            DoubleCell* doubleCell = new DoubleCell(std::stod(value));
-            std::cout << "Add double cell -->" << value << "\n";
-            m_row.push_back(doubleCell);
+            addDoubleCell(std::stod(value));
         }
         else {
-            StringCell* stringCell = new StringCell(value);
-            std::cout << "Add string cell -->" << value << "\n";
-            m_row.push_back(stringCell);
-        }
-    }
-}
-
-void deserializeRow(const std::string& fileName, Row& row) {
-    row.erase();
-    std::vector<std::string> words = row.rowElements(fileName);
-
-    for (int i = 0; i < words.size(); ++i) {
-        if (words[i] != "\n"){
-            if (Utils::isEmptyString(words[i])){
-                Cell* cell = new Cell(); 
-                row.add(cell);
-                std::cout << "\nadding empty cell... ---> " << words[i];
-            }
-            else if(Utils::isInteger(words[i])){
-                if (Utils::hasSign(words[i]) && Utils::isNegative(words[i])){
-                    Cell* cell = new IntCell(0 - std::stoi(words[i])); 
-                    row.add(cell);
-                    std::cout << "\nadding negative int cell... ---> " << words[i];
-                }
-                else {
-                    Cell* cell = new IntCell(std::stoi(words[i])); 
-                    row.add(cell);
-                    std::cout << "\nadding int cell... ---> " << words[i];
-                }
-            }
-            else if (Utils::isDouble(words[i])){
-                if (Utils::hasSign(words[i]) && Utils::isNegative(words[i])){
-                    Cell* cell = new DoubleCell(0 - std::stod(words[i])); 
-                    row.add(cell);
-                    std::cout << "\nadding negative double cell... ---> " << words[i];
-                }
-                else {
-                    Cell* cell = new DoubleCell(std::stod(words[i])); 
-                    row.add(cell);
-                    std::cout << "\nadding double cell... ---> " <<words[i];
-                }
-            }
-            else {
-                Cell* cell = new StringCell(words[i]); 
-                row.add(cell);
-                std::cout << "\nadding string cell... ---> " << words[i];
-            }
-            // todo if word is a formula
+            addStringCell(value);
         }
     }
 }

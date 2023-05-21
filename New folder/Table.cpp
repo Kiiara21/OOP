@@ -23,10 +23,11 @@ void Table::serializeTable(const std::string& fileName) {
     else {
         std::cout << "Failed to open the file for writing" << std::endl;
     }
-    std::cout << "\nSerialising table successful!";
+    std::cout << "\nSerialising table successful!\n\n";
 }
 
 void Table::deserializeTable(const std::string& fileName) {
+
     std::ifstream inputFile(fileName);
     std::cout << "\nDeserializing table ... \n\n";
     if (inputFile.is_open()) {
@@ -43,14 +44,6 @@ void Table::deserializeTable(const std::string& fileName) {
             
             Row* row = new Row;
             row->setElements(rowValues);
-            // std::cout << "\nnew row size: " << row->getSize() << std::endl;
-            // for (const Cell* cell : row->getCells()) {
-            //     if(Utils::isEmptyString(cell->getValueAsString())){
-            //         std::cout << "\nemtpy\n";
-            //     }
-            //     std::cout << cell->getValueAsString();
-            //     std::cout << " | ";
-            // }
             std::cout << "\nAdding row in table...\n" << std::endl;
             addRow(row);
             std::cout << getSize() << "\n";
@@ -60,9 +53,8 @@ void Table::deserializeTable(const std::string& fileName) {
     } else {
         std::cout << "Failed to open the file for reading." << std::endl;
     }
-    std::cout << "\nDeserialising table successful!";
+    std::cout << "\nDeserialising table successful!\n\n";
 }
-
 
 Row* Table::operator[](size_t index){
     assert(index < m_table.size());

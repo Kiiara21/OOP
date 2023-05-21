@@ -13,25 +13,39 @@
 //     TEST_CASE("Number Has Only One Dot"){
 //         CHECK_FALSE(!Validate::inNumberHasOnlyOneDot("1.1"));
 //         CHECK_FALSE(!Validate::inNumberHasOnlyOneDot("1111.6"));
+//         CHECK_FALSE(!Validate::inNumberHasOnlyOneDot("-1111.6"));
+//         CHECK_FALSE(!Validate::inNumberHasOnlyOneDot("+1111.6"));
 //         CHECK_FALSE(Validate::inNumberHasOnlyOneDot("1.1.1"));
 //     }
 
 //     TEST_CASE("Valid Number Has Only Number"){
+//         CHECK_FALSE(!Validate::inValidNumberHasOnlyNumbers("-11"));
 //         CHECK_FALSE(!Validate::inValidNumberHasOnlyNumbers("11"));
+//         CHECK_FALSE(!Validate::inValidNumberHasOnlyNumbers("+11"));
 //         CHECK_FALSE(!Validate::inValidNumberHasOnlyNumbers("1111.6"));
 //         CHECK_FALSE(Validate::inValidNumberHasOnlyNumbers("1.1.b"));
+//         CHECK_FALSE(!Validate::inValidNumberHasOnlyNumbers("-11.1"));
+//         CHECK_FALSE(!Validate::inValidNumberHasOnlyNumbers("+11.1"));
 //     }
 
 //     TEST_CASE("Valid string"){
-//         CHECK_FALSE(!Validate::isValidString("1111.6"));
-//         CHECK_FALSE(Validate::isValidString("1.1.b"));
+//         CHECK_FALSE(!Validate::isValidData("1111.6"));
+//         CHECK_FALSE(Validate::isValidData("1.1.b"));
+//     }
+
+//     TEST_CASE("is word"){
+//         CHECK_FALSE(!Validate::isWord("\"Quoted\""));
+//         CHECK_FALSE(Validate::isWord("1234"));
+//         CHECK_FALSE(Validate::isWord("\"Quo123ted\""));
+//         CHECK_FALSE(!Validate::isWord("\"\""));
+//         CHECK_FALSE(Validate::isWord("===="));
 //     }
 // }
 
 // TEST_SUITE("Utils tests"){
 //     TEST_CASE("Count Lines In File"){
 //         size_t numberOfLineInFile = Utils::countLinesInFile("output.txt");
-//         CHECK_EQ(numberOfLineInFile, 1);
+//         CHECK_EQ(numberOfLineInFile, 3);
 //     }
 
 //     TEST_CASE("Is integer"){
@@ -55,19 +69,27 @@
 //     TEST_CASE("Has sign"){
 //         CHECK_FALSE(!Utils::hasSign("-123"));
 //         CHECK_FALSE(!Utils::hasSign("+123"));
+//         CHECK_FALSE(!Utils::hasSign("-12.3"));
+//         CHECK_FALSE(!Utils::hasSign("+12.3"));
 //         CHECK_FALSE(Utils::hasSign("123"));
+
 //     }
 
 //     TEST_CASE("Is positive"){
 //         CHECK_FALSE(!Utils::isPositive("+123"));
 //         CHECK_FALSE(!Utils::isPositive("123"));
+//         CHECK_FALSE(!Utils::isPositive("+12.3"));
+//         CHECK_FALSE(!Utils::isPositive("12.3"));
 //         CHECK_FALSE(Utils::isPositive("-123"));
 //     }
 
 //     TEST_CASE("Is negative"){
 //         CHECK_FALSE(!Utils::isNegative("-123"));
+//         CHECK_FALSE(!Utils::isNegative("-12.3"));
 //         CHECK_FALSE(Utils::isNegative("123"));
+//         CHECK_FALSE(Utils::isNegative("12.3"));
 //         CHECK_FALSE(Utils::isNegative("+123"));
+//         CHECK_FALSE(Utils::isNegative("+12.3"));
 //     }
 // }
 
