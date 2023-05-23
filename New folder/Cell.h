@@ -12,8 +12,6 @@ public:
 
     virtual Cell* clone() = 0;
 
-    virtual void print() const = 0;
-
     virtual std::string getValueAsString() const = 0;
 
     virtual void serializeCell(std::ofstream& os) = 0;

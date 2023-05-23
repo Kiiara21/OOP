@@ -1,7 +1,8 @@
 #pragma once
 #include "Cell.h"
+#include "IPrintable.h"
 
-class DoubleCell : public Cell {
+class DoubleCell : public Cell, public IPrintable {
 
 private:
 
