@@ -10,6 +10,7 @@ private:
 public:
 
     void addRow(Row* row);
+    void addEmptyRow(int numberOfCells);
 
     void printTable() const;
 

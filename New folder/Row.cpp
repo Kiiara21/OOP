@@ -1,5 +1,7 @@
 #include "Row.h"
 
+unsigned int Row::s_counter = 1;
+
 void Row::copy(const Row& other) {
     size_t otherSize = other.m_row.size();
     m_row.reserve(otherSize);
@@ -28,7 +30,7 @@ Row& Row::operator=(const Row& other) {
 }
 
 Row::Row() {
-    
+    m_rowId = s_counter++;
 }
 
 Row::~Row() {
@@ -40,14 +42,13 @@ void Row::add(Cell* cell) {
     if (Validate::isValidData(value)) {
         m_row.push_back(cell);
     } else {
-        throw std::invalid_argument("Invalid data!"); // Throw an exception with an error message
+        throw std::invalid_argument("row " + std::to_string(m_rowId) + ", col " + std::to_string(getSize()) + " " + cell->getValueAsString() + " is unknown data type!"); 
     }
 }
 
 void Row::addEmptyCell() {
     try {
-        add(new Cell());
-        std::cout << "\nadding empty cell... ---> ";
+        add(new EmptyCell());
     } catch (const std::exception& e) {
         std::cout << "\nException caught: " << e.what() << std::endl;
     }
@@ -57,24 +58,20 @@ void Row::addIntCell(const int& data) {
     try {
         if (Utils::hasSign(std::to_string(data)) && Utils::isNegative(std::to_string(data))) {
             add(new IntCell(data));
-            std::cout << "\nadding negative int cell... ---> " << data;
         } else {
             add(new IntCell(data));
-            std::cout << "\nadding int cell... ---> " << data;
         }
     } catch (const std::exception& e) {
         std::cout << "\nException caught: " << e.what() << std::endl;
     }
-}
+}// fix it
 
 void Row::addDoubleCell(const double& data) {
     try {
         if (Utils::hasSign(std::to_string(data)) && Utils::isNegative(std::to_string(data))) {
             add(new DoubleCell(data));
-            std::cout << "\nadding negative double cell... ---> " << data;
         } else {
             add(new DoubleCell(data));
-            std::cout << "\nadding double cell... ---> " << data;
         }
     } catch (const std::exception& e) {
         std::cout << "\nException caught: " << e.what() << std::endl;
@@ -84,7 +81,6 @@ void Row::addDoubleCell(const double& data) {
 void Row::addStringCell(const std::string& data) {
     try {
         add(new StringCell(data));
-        std::cout << "\nadding string cell... ---> " << data;
     } catch (const std::exception& e) {
         std::cout << "\nException caught: " << e.what() << std::endl;
     }

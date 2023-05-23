@@ -10,7 +10,7 @@ private:
 
 public:
 
-    StringCell() : Cell(), m_data("") {}
+    StringCell() : m_data("") {}
 
     StringCell(const std::string data);
 

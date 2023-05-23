@@ -1,6 +1,6 @@
 #include "IntCell.h"
 
-IntCell::IntCell(const int data) : Cell(), m_data(data){}
+IntCell::IntCell(const int data) : m_data(data){}
 
 Cell* IntCell::clone(){
     return new IntCell(m_data);

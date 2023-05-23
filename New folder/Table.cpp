@@ -5,6 +5,16 @@ void Table::addRow(Row* row) {
     m_table.push_back(row);
 }
 
+void Table::addEmptyRow(int numberOfCells){
+    Row* emptyRow = new Row;
+    for(int i = 0; i < numberOfCells; ++i){
+        emptyRow->addEmptyCell();
+    }
+
+    m_table.push_back(emptyRow);
+}
+
+
 void Table::printTable() const {
 
     std::vector<int> columnWidths(m_table[0]->getSize(), 0);
@@ -49,9 +59,7 @@ void Table::deserializeTable(std::ifstream &is) {
         
         Row* row = new Row;
         row->setElements(rowValues);
-        std::cout << "\nAdding row in table...\n" << std::endl;
         addRow(row);
-        std::cout << getSize() << "\n";
     }
 
     std::cout << "\nDeserialising table successful!\n\n";

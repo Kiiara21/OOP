@@ -29,9 +29,12 @@ int main(){
 
     table.addRow(&row1);
     table.addRow(&row2); 
+    table.addEmptyRow(5);
     table.addRow(&row3);
 
-    // table.serializeTable("output.txt");
+    // std::ofstream outputFile("tables.txt", std::ios::trunc);
+    // table.serializeTable(outputFile); // have to serialize table befure start the menu
+
 
     IO::menu();
 

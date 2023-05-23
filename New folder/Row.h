@@ -2,6 +2,7 @@
 #include "IntCell.h"
 #include "DoubleCell.h"
 #include "StringCell.h"
+#include "EmptyCell.h"
 #include "ValidateData.h"
 #include"Utils.h"
 #include <vector>
@@ -10,7 +11,10 @@
 
 class Row {
     
-private:
+private:   
+
+    static unsigned int s_counter;
+    unsigned int m_rowId;
 
     std::vector<Cell*> m_row;
 

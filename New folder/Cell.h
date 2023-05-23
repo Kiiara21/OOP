@@ -6,25 +6,17 @@
 
 class Cell {
 
-protected:
-
-    std::string m_emptyString;
-
 public:
 
-    Cell();
+    Cell() = default;
 
-    Cell(std::string emptyString) : m_emptyString(emptyString){}
+    virtual Cell* clone() = 0;
 
-    virtual Cell* clone();
+    virtual void print() const = 0;
 
-    virtual void print() const;
+    virtual std::string getValueAsString() const = 0;
 
-    virtual std::string getValueAsString() const {return m_emptyString; }
-
-    virtual void serializeCell(std::ofstream& os);
-
-    friend std::istream& operator>>(std::istream& in, Cell& cell);
+    virtual void serializeCell(std::ofstream& os) = 0;
 
     virtual ~Cell() = default;
     

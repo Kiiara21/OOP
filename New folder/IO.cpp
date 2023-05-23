@@ -7,6 +7,7 @@ std::string IO::m_currentFile;
 bool IO::m_saved, IO::m_closed = true, IO::m_changes;
 
 void IO::menu(){
+    IO::table.clear();
 
     std::string command;
 
@@ -157,8 +158,6 @@ void IO::help(){
             << "add <Cell> [<data for cell>] - Creates new cell with the specified data.\n"
             << "erase <index> - Erases cell on the specified index.\n"
 
-
-
             << "Util commands are:\n"
             << "print - Prints out the file information about all the cells.\n"
             << "help - Prints out this menu.\n"
@@ -169,14 +168,17 @@ void IO::edit() {
     int row, col;
     std::string newValue;
 
-    do {    
+    do {
         std::cout << "\nEnter valid row and column to edit cell: ";
         std::cin >> row >> col;
-    } while (table[row] == nullptr);
-    
-    std::cout << "\nEnter value to edit with: ";
-    std::cin >> newValue;
+    } while (row < 0 || row >= table.getSize() || col < 0 || col >= table[row]->getSize());
 
+    do
+    {
+        std::cout << "\nEnter valid value to edit with: ";
+        std::cin >> newValue;
+    } while (!Validate::isValidData(newValue));
+    
     try {
         if (Utils::isEmptyString(newValue)) {
             Cell* newCell;
