@@ -20,6 +20,7 @@ public:
     Row* operator[](size_t index);
     const Row* operator[](size_t index) const;
 
+
     void serializeTable(std::ofstream& os);
 
     void deserializeTable(std::ifstream &is);

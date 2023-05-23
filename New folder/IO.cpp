@@ -14,7 +14,10 @@ void IO::menu(){
     do{
         std::cout << "\nEnter command: ";
         std::cin >> command;
-        if(command == "exit"){
+        if ((command == "print" || command == "save" || command == "saveAs" || command == "close") && IO::m_closed != false){
+            std::cout << "Please, first open file!";
+        }
+        else if(command == "exit"){
             if(m_closed) {
                 checkMemoryLeaks();
                 break;
@@ -196,9 +199,6 @@ void IO::edit() {
         std::cout << "\nError: " << e.what() << std::endl;
     }
 }
-
-
-
 
 void IO::print(){
     IO::table.printTable();

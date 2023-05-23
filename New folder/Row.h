@@ -38,8 +38,6 @@ public:
 
     void setElements(std::vector<std::string> rowElement);
     
-    void printRow(size_t offset) const;
-
     // void erase(int index); to do
 
     void serializeRow(std::ofstream& os);

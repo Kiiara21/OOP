@@ -103,24 +103,6 @@ void Row::addAtPosition(int index, Cell* newCell) {
         std::cout << e.what() << std::endl;
     }
 }
- 
-void Row::printRow(size_t offset) const {
-    for (const Cell* cell : m_row) {
-        // std::cout << "curr cell size:" << cell->getValueAsString().size();
-        int temp = (offset - cell->getValueAsString().size()) / 2;
-        // offset = cell->getValueAsString().size() / 2 - offset;
-
-        for(int i = 0; i < temp; ++i){
-            std::cout << " ";
-        }
-        std::cout << "|";
-        for(int i = 0; i < temp; ++i){
-            std::cout << " ";
-        }
-        cell->print();
-    }
-    std::cout << std::endl;
-}
 
 void Row::serializeRow(std::ofstream& os){
     for(int i = 0; i < m_row.size(); ++i){

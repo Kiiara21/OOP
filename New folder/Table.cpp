@@ -6,21 +6,23 @@ void Table::addRow(Row* row) {
 }
 
 void Table::printTable() const {
-    size_t maxCellSizeOnRow = 0;
 
-    for (int i = 0 ; i < getSize(); ++i){
-        size_t currMaxSize = m_table[i]->getMaxCellSize();
-        if(currMaxSize > maxCellSizeOnRow){
-            maxCellSizeOnRow = currMaxSize;
-        }
-    }   
+    std::vector<int> columnWidths(m_table[0]->getSize(), 0);
 
-    size_t offset = maxCellSizeOnRow;
-    
     for (const Row* row : m_table) {
-        row->printRow(offset);
+        for (size_t col = 0; col < row->getSize(); col++) {
+            if (row->operator[](col)->getValueAsString().length() > columnWidths[col]) {
+                columnWidths[col] = row->operator[](col)->getValueAsString().length();
+            }
+        }
     }
-    std::cout << std::endl;
+
+    for (const Row* row : m_table) {
+        for (size_t col = 0; col < row->getSize(); col++) {
+            std::cout << std::setw(columnWidths[col]) << std::right << row->operator[](col)->getValueAsString() << " | ";
+        }
+        std::cout << std::endl;
+    }
 }
 
 void Table::serializeTable(std::ofstream& os) {
