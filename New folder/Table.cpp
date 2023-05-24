@@ -36,6 +36,7 @@ void Table::printTable() const {
 }
 
 void Table::serializeTable(std::ofstream& os) {
+    convertFormulasInTable();
     for(int i = 0; i < m_table.size(); ++i){
         m_table[i]->serializeRow(os);
     }
@@ -86,6 +87,12 @@ const Row* Table::operator[](size_t index) const{
     } catch (const std::out_of_range& e) {
         std::cout << "\nError: " << e.what() << std::endl;
         return nullptr;
+    }
+}
+
+void Table::convertFormulasInTable(){
+    for(int i = 0; i < getSize(); ++i){
+        m_table[i]->convertFormulasInRow();
     }
 }
 

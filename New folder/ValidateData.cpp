@@ -1,8 +1,5 @@
 #include "ValidateData.h"
 
-bool Validate::isNumber(const char& ch){
-    return (ch >= '0' && ch <= '9');
-}
 
 bool Validate::inNumberHasOnlyOneDot(const std::string& number){
     int dotCount = 0;
@@ -21,7 +18,7 @@ bool Validate::inValidNumberHasOnlyNumbers(const std::string& number){
     int i = Utils::hasSign(number) ? 1 : 0;
 
     for (; i < number.size(); ++i){ 
-        if(!isNumber(number[i]) && number[i] != '.'){
+        if(!Utils::isNumber(number[i]) && number[i] != '.'){
             return false;
         }
     }
@@ -42,5 +39,5 @@ bool Validate::isWord(const std::string& str){ // a word has only letters and \ 
 }
 
 bool Validate::isValidData(const std::string& str){
-    return ((inNumberHasOnlyOneDot(str) && inValidNumberHasOnlyNumbers(str)) || isWord(str));
+    return ((inNumberHasOnlyOneDot(str) && inValidNumberHasOnlyNumbers(str)) || isWord(str) || Utils::isFormula(str));
 }

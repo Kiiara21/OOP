@@ -11,7 +11,6 @@ private:
 public:
 
     IntCell() : m_data(0) {}
-
     IntCell(const int data);
 
     virtual Cell* clone() override final;

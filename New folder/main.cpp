@@ -17,7 +17,9 @@ int main(){
     row2.addDoubleCell(44);
     row2.addIntCell(12);
     row2.addEmptyCell();
-    row2.addStringCell("");
+    row2.addStringCell("=10+10");
+    row2.addStringCell("=10/0");
+
 
     Row row3;
     row3.addEmptyCell();
@@ -32,11 +34,11 @@ int main(){
     table.addEmptyRow(5);
     table.addRow(&row3);
 
-    // std::ofstream outputFile("tables.txt", std::ios::trunc);
-    // table.serializeTable(outputFile); // have to serialize table befure start the menu
+    std::ofstream outputFile("tables.txt", std::ios::trunc);
+    table.serializeTable(outputFile); // have to serialize table befure start the menu
 
 
-    IO::menu();
+    // IO::menu();
 
     return 0;
 }

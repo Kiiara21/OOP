@@ -4,8 +4,8 @@
 
 class IO {
 
-
 private:
+
     static std::string m_currentFile;
     static bool m_saved, m_closed, m_changes;
     static Table table;

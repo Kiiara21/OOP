@@ -184,3 +184,22 @@ const Cell* Row::operator[](size_t index) const{
         return nullptr;
     }
 }
+
+void Row::convertFormulasInRow(){
+    for(int i = 0; i < getSize(); ++i){
+        if(Utils::isFormula(m_row[i]->getValueAsString())){
+            if(Utils::hasDevisionByZero(m_row[i]->getValueAsString())){
+                Cell* errorCell = new StringCell("ERROR");
+                addAtPosition(i, errorCell);
+            }
+            else if(Utils::hasOnlyLiterals(m_row[i]->getValueAsString())){
+                Cell* convertedCell = Utils::convertedValue(m_row[i]->getValueAsString());
+                addAtPosition(i, convertedCell);
+            }
+            else if(Utils::hasReferencesOfCells(m_row[i]->getValueAsString())){
+
+            }
+        }
+    }
+}
+;

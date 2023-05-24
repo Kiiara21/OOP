@@ -49,6 +49,8 @@ public:
     Cell* operator[](size_t index);
     const Cell* operator[](size_t index) const;
 
+    void convertFormulasInRow();
+
     size_t getSize() const { return m_row.size(); }
 
 };
