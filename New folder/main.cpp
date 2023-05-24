@@ -34,11 +34,11 @@ int main(){
     table.addEmptyRow(5);
     table.addRow(&row3);
 
-    std::ofstream outputFile("tables.txt", std::ios::trunc);
-    table.serializeTable(outputFile); // have to serialize table befure start the menu
+    // std::ofstream outputFile("tables.txt", std::ios::trunc);
+    // table.serializeTable(outputFile); // have to serialize table befure start the menu
 
 
-    // IO::menu();
+    IO::menu();
 
     return 0;
 }
