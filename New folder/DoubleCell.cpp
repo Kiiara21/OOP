@@ -10,6 +10,13 @@ void DoubleCell::print() const{
     std::cout << m_data;
 }
 
+std::string DoubleCell::getValueAsString() const {
+    std::string strValue = std::to_string(m_data);
+    std::regex regexPattern("(\\.[0-9]*[1-9])?0*$");
+    std::string trimmedValue = std::regex_replace(strValue, regexPattern, "$1");
+    return trimmedValue;
+}
+
 void DoubleCell::serializeCell(std::ofstream& os){
     os << m_data << ",";
 }

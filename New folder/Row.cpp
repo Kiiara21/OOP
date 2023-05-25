@@ -56,23 +56,15 @@ void Row::addEmptyCell() {
 
 void Row::addIntCell(const int& data) {
     try {
-        if (Utils::hasSign(std::to_string(data)) && Utils::isNegative(std::to_string(data))) {
-            add(new IntCell(data));
-        } else {
-            add(new IntCell(data));
-        }
+        add(new IntCell(data));
     } catch (const std::exception& e) {
         std::cout << "\nException caught: " << e.what() << std::endl;
     }
-}// fix it
+}
 
 void Row::addDoubleCell(const double& data) {
     try {
-        if (Utils::hasSign(std::to_string(data)) && Utils::isNegative(std::to_string(data))) {
-            add(new DoubleCell(data));
-        } else {
-            add(new DoubleCell(data));
-        }
+        add(new DoubleCell(data));
     } catch (const std::exception& e) {
         std::cout << "\nException caught: " << e.what() << std::endl;
     }
@@ -142,7 +134,6 @@ const size_t Row::getMaxCellSize(){
     }
     return maxCellSize;
 }
-
 
 void Row::setElements(std::vector<std::string> rowElements){
     for (const std::string& value : rowElements){

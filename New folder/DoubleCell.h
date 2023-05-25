@@ -1,4 +1,5 @@
 #pragma once
+#include <regex>
 #include "Cell.h"
 #include "IPrintable.h"
 
@@ -16,7 +17,7 @@ public:
 
     virtual Cell* clone() override final;
 
-    virtual std::string getValueAsString() const override final {return std::to_string(m_data); }
+    virtual std::string getValueAsString() const override final;
 
     void print() const override final;
 
