@@ -20,6 +20,9 @@ public:
     Row* operator[](size_t index);
     const Row* operator[](size_t index) const;
 
+    Cell* makeCellFromFormula(std::string referenceRowIndex, std::string referenceColumnIndex);
+
+    void convertFormulasInRow();
     void convertFormulasInTable();
 
     void serializeTable(std::ofstream& os);

@@ -159,7 +159,7 @@
 //     TEST_SUITE("Double cell tests"){
 //         TEST_CASE("Get value as string"){
 //             DoubleCell doubleCell(1.1);
-//             CHECK_EQ(doubleCell.getValueAsString(), "1.100000");
+//             CHECK_EQ(doubleCell.getValueAsString(), "1.1");
 //         }
 
 //         TEST_CASE("Serialize double cell"){
@@ -192,7 +192,7 @@
 //     TEST_CASE("add double cell"){
 //         Row row;
 //         row.addDoubleCell(1.1);
-//         CHECK_EQ(row[0]->getValueAsString(), "1.100000");
+//         CHECK_EQ(row[0]->getValueAsString(), "1.1");
 //         CHECK_EQ(row.getSize(), 1);
 //     }
 

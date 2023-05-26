@@ -59,8 +59,36 @@ bool Utils::isNumber(const char& ch){
     return (ch >= '0' && ch <= '9');
 }
 
+bool Utils::isLetter(const char& ch){
+    return ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z'));
+}
+
+bool Utils::isWord(const std::string& str){ // a word has only letters and \ and "
+    for(int i = 0; i < str.size(); ++i){
+        if(!(isLetter(str[i])) && str[i] != '\\' && str[i] != '\"' && str[i] != ' '){
+            return false;
+        }
+    }
+    return true;
+}
+
+bool Utils::isErrorString(const std::string& str){
+    return str == "ERROR";
+}
+
 bool Utils::isArithmeticOperation(const char& ch){
     return (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^');
+}
+
+bool Utils::hasDevisionByZero(const std::string& str){
+    double secondNumber;
+    int i = 1;
+    while(!isArithmeticOperation(str[i])){
+        i++;
+    }
+    char operation = str[i];
+    secondNumber = std::stod(str.substr(i + 1, str.size() - i));
+    return (secondNumber == 0 && operation == '/');
 }
 
 bool Utils::hasOnlyLiterals(const std::string& str){
@@ -73,10 +101,10 @@ bool Utils::hasOnlyLiterals(const std::string& str){
 }
 
 bool Utils::hasReferencesOfCells(const std::string& str){
-    for(const char& ch : str){
-        if(ch == 'R'){
+    for(int i = 1; i < str.size(); ++i){
+        if(str[i] == 'R'){
             return true;
-        }    
+        }
     }
     return false;
 }
@@ -132,131 +160,91 @@ bool Utils::containsDoubleAndIntegerNumbers(const std::string& str){
     return (dotCounter == 1 && (dotPosition < signPosition));
 }
 
+std::string Utils::tanslateCell(const std::string& cellValue){
+    if(isWord(cellValue) || isEmptyString(cellValue) || isErrorString(cellValue)) return "0";
+    else return cellValue;
+}
+
 Cell* Utils::convertedValue(const std::string& str){
     size_t strSize = str.size();
-    char operation;
-    int i = 1;
+    double firstNumber, secondNumber, result = 0;
 
-    if(containsOnlyDoubleNumbers(str)){
-        double firstNumber;
-        double secondNumber;
-        double result;
+    unsigned int operationPosition = getOperationPosition(str);
+    char operation = getOperation(str);
 
-        while(!isArithmeticOperation(str[i])){
-            i++;
+    firstNumber = std::stod(str.substr(1, operationPosition - 1));  
+    secondNumber = std::stod(str.substr(operationPosition + 1, strSize - operationPosition));
+
+    if (operation == '+') {
+        result = firstNumber + secondNumber;
+    } else if (operation == '-') {
+        result = firstNumber - secondNumber;
+    } else if (operation == '*') {
+        result = firstNumber * secondNumber;
+    } else if (operation == '/') {
+        if (secondNumber == 0){
+            Cell* errorCell = new StringCell("ERROR");
+            result = 0.0;
+            return errorCell;
         }
-        operation = str[i];
-        firstNumber = std::stod(str.substr(1, i - 1));
-        secondNumber = std::stod(str.substr(i + 1, str.size() - i));
-        
-        if (operation == '+') {
-            result = firstNumber + secondNumber;
-        } else if (operation == '-') {
-            result = firstNumber - secondNumber;
-        } else if (operation == '*') {
-            result = firstNumber * secondNumber;
-        } else if (operation == '/') {
+        else {
             result = firstNumber / secondNumber;
         }
-        else result = pow(firstNumber, secondNumber);
-
-        i = 1;
-        Cell* doubleCell = new DoubleCell(result);
-        return doubleCell;
     }
-
-    else if(containsIntegerAndDoubleNumbers(str)){
-        int firstNumber;
-        double secondNumber;
-        double result;
-
-        while(!isArithmeticOperation(str[i])){
-            i++;
-        }
-        operation = str[i];
-        firstNumber = std::stoi(str.substr(1, i - 1));
-        secondNumber = std::stod(str.substr(i + 1, str.size() - i));
-        if (operation == '+') {
-            result = firstNumber + secondNumber;
-        } else if (operation == '-') {
-            result = firstNumber - secondNumber;
-        } else if (operation == '*') {
-            result = firstNumber * secondNumber;
-        } else if (operation == '/') {
-            result = firstNumber / secondNumber;
-        }
-        else result = pow(firstNumber, secondNumber);
-        i = 1;
-
-        Cell* doubleCell = new DoubleCell(result);
-        return doubleCell;
+    else result = pow(firstNumber, secondNumber);
+    if (std::isinf(result)) {
+        result = 0;
     }
+    Cell* doubleCell = new DoubleCell(result);
+    return doubleCell;
+}
 
-    else if(containsDoubleAndIntegerNumbers(str)){
-        double firstNumber;
-        int secondNumber;
-        double result;
+void Utils::removeRandL(const std::string& str, std::string& rowIndex, std::string& colIndex){
 
-        while(!isArithmeticOperation(str[i])){
-            i++;
-        }
-        operation = str[i];
-        firstNumber = std::stod(str.substr(1, i - 1));
-        secondNumber = std::stoi(str.substr(i + 1, str.size() - i));
+    size_t rPosition = str.find('R');
+    size_t cPosition = str.find('C');
 
-        if (operation == '+') {
-            result = firstNumber + secondNumber;
-        } else if (operation == '-') {
-            result = firstNumber - secondNumber;
-        } else if (operation == '*') {
-            result = firstNumber * secondNumber;
-        } else if (operation == '/') {
-            result = firstNumber / secondNumber;
-        }
-        else result = pow(firstNumber, secondNumber);
-        i = 1;
-
-        Cell* doubleCell = new DoubleCell(result);
-        return doubleCell;
+    if(rPosition != std::string::npos && cPosition != std::string::npos && rPosition < cPosition){
+        rowIndex = str.substr(rPosition + 1, cPosition - rPosition - 1);
+        colIndex = str.substr(cPosition + 1);
     }
+}
 
+const char& Utils::getOperation(const std::string& str){
+    return str[getOperationPosition(str)];
+}
+
+const unsigned int Utils::getOperationPosition(const std::string& str){
+    int operationPosition;
+    if(str[1] == '+' || str[1] == '-'){
+        operationPosition = 2;
+    }
+    else operationPosition = 1;
+    
+    while(!isArithmeticOperation(str[operationPosition])){
+        operationPosition++;
+    }
+    return operationPosition;
+}
+
+void Utils::getIndexOfCellInReferences(const std::string& str, std::string& firstCellRow, std::string& firstCellColumn,
+                                                                std::string& secondCellRow, std::string& secondCellColumn){
+    
+    const unsigned int operationPosition = getOperationPosition(str);
+
+    std::string firstReference, secondReference;
+
+    if(operationPosition != std::string::npos){
+        firstReference = str.substr(1, operationPosition - 1);
+        secondReference = str.substr(operationPosition + 1);
+    }
     else {
-        int firstNumber;
-        int secondNumber;
-        int result;
-
-        while(!isArithmeticOperation(str[i])){
-            i++;
-        }
-        operation = str[i];
-        firstNumber = std::stoi(str.substr(1, i - 1));
-        secondNumber = std::stoi(str.substr(i + 1, str.size() - i));
-
-        if (operation == '+') {
-            result = firstNumber + secondNumber;
-        } else if (operation == '-') {
-            result = firstNumber - secondNumber;
-        } else if (operation == '*') {
-            result = firstNumber * secondNumber;
-        } else if (operation == '/') {
-            result = firstNumber / secondNumber;
-        }
-        else result = pow(firstNumber, secondNumber);
-        i = 1;
-
-        Cell* intCell = new IntCell(result);
-        return intCell;
+        firstReference = "";
+        secondReference = "";
     }
+
+    removeRandL(firstReference, firstCellRow, firstCellColumn);
+    removeRandL(secondReference, secondCellRow, secondCellColumn);
 }
 
-
-bool Utils::hasDevisionByZero(const std::string& str){
-    double secondNumber;
-    int i = 1;
-    while(!isArithmeticOperation(str[i])){
-        i++;
-    }
-    char operation = str[i];
-    secondNumber = std::stod(str.substr(i + 1, str.size() - i));
-    return (secondNumber == 0 && operation == '/');
-}
+ 

@@ -11,7 +11,7 @@ private:
 
 public:
 
-    DoubleCell() : Cell(), m_data(0.0) {}
+    DoubleCell() : m_data(0.0) {}
 
     DoubleCell(const double data);
 

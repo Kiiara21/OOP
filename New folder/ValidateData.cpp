@@ -25,19 +25,6 @@ bool Validate::inValidNumberHasOnlyNumbers(const std::string& number){
     return true;
 }
 
-bool Validate::isLetter(const char& ch){
-    return ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z'));
-}
-
-bool Validate::isWord(const std::string& str){ // a word has only letters and \ and "
-    for(int i = 0; i < str.size(); ++i){
-        if(!(isLetter(str[i])) && str[i] != '\\' && str[i] != '\"'){
-            return false;
-        }
-    }
-    return true;
-}
-
 bool Validate::isValidData(const std::string& str){
-    return ((inNumberHasOnlyOneDot(str) && inValidNumberHasOnlyNumbers(str)) || isWord(str) || Utils::isFormula(str));
+    return ((inNumberHasOnlyOneDot(str) && inValidNumberHasOnlyNumbers(str)) || Utils::isWord(str) || Utils::isFormula(str) || Utils::hasReferencesOfCells(str));
 }

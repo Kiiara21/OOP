@@ -6,19 +6,22 @@ int main(){
 
     Row row1, row2;
 
-    row1.addDoubleCell(-1.2);
-    row1.addIntCell(-1);
-    row1.addEmptyCell();
-    row1.addStringCell("-2.4.2");
-    row1.addStringCell("\"Quoted\"");
-    row1.addStringCell(""); // when add empty strig this will be empty cell
+    row1.addStringCell("123");
+    row1.addStringCell("123.456.789");
+    row1.addDoubleCell(123.456);
+    row1.addStringCell("Hello world");
+    row1.addStringCell("123abc");
+    row1.addIntCell(1);
+    row1.addIntCell(2);
 
 
-    row2.addDoubleCell(44);
-    row2.addIntCell(12);
-    row2.addEmptyCell();
-    row2.addStringCell("=10+10");
+    row2.addStringCell("=1+1");
     row2.addStringCell("=10/0");
+    row2.addStringCell("=R0C0-R1C10");
+    row2.addStringCell("=R0C0-R1C0");
+    row2.addStringCell("=R0C0-R0C3");
+    row2.addStringCell("=R0C0-R0C2");
+    row2.addStringCell("=R0C3/R0C4");
 
 
     Row row3;
@@ -26,6 +29,13 @@ int main(){
     row3.addEmptyCell();
     row3.addEmptyCell();
     row3.addEmptyCell();
+    row3.addStringCell("=R0C0/R1C2");
+    row3.addStringCell("=R0C0/R0C2");
+    row3.addStringCell("=R0C0*R1C2");
+    row3.addStringCell("=R0C0^R1C0");
+    row3.addStringCell("=R0C0^R0C2");
+
+
 
     Table table;
 
@@ -35,8 +45,7 @@ int main(){
     table.addRow(&row3);
 
     // std::ofstream outputFile("tables.txt", std::ios::trunc);
-    // table.serializeTable(outputFile); // have to serialize table befure start the menu
-
+    // table.serializeTable(outputFile); // have to serialize table before start the menu
 
     IO::menu();
 

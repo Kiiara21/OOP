@@ -29,7 +29,7 @@ void Table::printTable() const {
 
     for (const Row* row : m_table) {
         for (size_t col = 0; col < row->getSize(); col++) {
-            std::cout << std::setw(columnWidths[col]) << std::right << row->operator[](col)->getValueAsString() << " | ";
+            std::cout << std::setw(columnWidths[col]) << std::left << row->operator[](col)->getValueAsString() << " | ";
         }
         std::cout << std::endl;
     }
@@ -90,9 +90,39 @@ const Row* Table::operator[](size_t index) const{
     }
 }
 
+Cell* Table::makeCellFromFormula(std::string referenceRowIndex, std::string referenceColumnIndex){
+    Cell* cellInFormula = nullptr;
+    if(std::stoi(referenceRowIndex) > getSize() - 1 || std::stoi(referenceColumnIndex) > m_table.operator[](std::stoi(referenceRowIndex))->getSize() - 1){
+        cellInFormula = new EmptyCell(); 
+    }
+    else cellInFormula = m_table.operator[](std::stoi(referenceRowIndex))->operator[](std::stoi(referenceColumnIndex));
+    return cellInFormula;
+}
+
 void Table::convertFormulasInTable(){
     for(int i = 0; i < getSize(); ++i){
-        m_table[i]->convertFormulasInRow();
+        for(int j = 0; j < m_table[i]->getSize(); ++j){
+            std::string currCell = m_table.operator[](i)->operator[](j)->getValueAsString();
+            if(Utils::isFormula(currCell) && Utils::hasReferencesOfCells(currCell)){
+                std::string firstReferenceRowIndex, firstReferenceColumnIndex;
+                std::string secondReferenceRowIndex, secondReferenceColumnIndex;
+
+                Utils::getIndexOfCellInReferences(currCell, firstReferenceRowIndex, firstReferenceColumnIndex, secondReferenceRowIndex, secondReferenceColumnIndex);
+                
+                const char operation = Utils::getOperation(currCell);
+                
+                Cell* firstCellInFormula = makeCellFromFormula(firstReferenceRowIndex, firstReferenceColumnIndex);
+                Cell* secondCellInFormula = makeCellFromFormula(secondReferenceRowIndex, secondReferenceColumnIndex);
+
+                std::string literalsFormula = "=" + Utils::tanslateCell(firstCellInFormula->getValueAsString()) + operation + Utils::tanslateCell(secondCellInFormula->getValueAsString());
+                Cell* convertedCell = Utils::convertedValue(literalsFormula);
+                m_table.operator[](i)->addAtPosition(j, convertedCell);
+            }
+            else if(Utils::isFormula(currCell) && Utils::hasOnlyLiterals(currCell)){
+                Cell* convertedCell = Utils::convertedValue(currCell);
+                m_table.operator[](i)->addAtPosition(j, convertedCell);
+            }
+        }
     }
 }
 

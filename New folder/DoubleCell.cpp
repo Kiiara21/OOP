@@ -1,6 +1,6 @@
 #include "DoubleCell.h"
 
-DoubleCell::DoubleCell(const double data) : Cell(), m_data(data){}
+DoubleCell::DoubleCell(const double data) : m_data(data){}
 
 Cell* DoubleCell::clone(){
     return new DoubleCell(m_data);
