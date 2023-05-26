@@ -1,21 +1,28 @@
 #include "Table.h"
 
-
 void Table::addRow(Row* row) {
     m_table.push_back(row);
 }
 
-void Table::addEmptyRow(int numberOfCells){
+void Table::addEmptyRow(int numberOfCells) {
     Row* emptyRow = new Row;
-    for(int i = 0; i < numberOfCells; ++i){
-        emptyRow->addEmptyCell();
+    try {
+        for (size_t i = 0; i < numberOfCells; ++i) {
+            emptyRow->addEmptyCell();
+        }
+        m_table.push_back(emptyRow);
+    } 
+    catch (const std::exception& e) {
+        std::cout << "\nError adding empty row: " << e.what() << std::endl;
+        delete emptyRow;
     }
-
-    m_table.push_back(emptyRow);
 }
 
-
 void Table::printTable() const {
+    if (m_table.empty()) {
+        std::cout << "Table is empty." << std::endl;
+        return;
+    }
 
     std::vector<int> columnWidths(m_table[0]->getSize(), 0);
 
@@ -37,33 +44,36 @@ void Table::printTable() const {
 
 void Table::serializeTable(std::ofstream& os) {
     convertFormulasInTable();
-    for(int i = 0; i < m_table.size(); ++i){
-        m_table[i]->serializeRow(os);
+    try {
+        for (size_t i = 0; i < m_table.size(); ++i) {
+            m_table[i]->serializeRow(os);
+        }
+        std::cout << "\nSerializing table successful!\n\n";
+    } catch (const std::exception& e) {
+        std::cout << "Error serializing table: " << e.what() << std::endl;
     }
-    std::cout << "\nSerialising table successful!\n\n";
 }
 
-void Table::deserializeTable(std::ifstream &is) {
-
-    std::cout << "\nDeserializing table ... \n\n";
-    
+void Table::deserializeTable(std::ifstream& is) {
     std::string line;
-    
-    while (std::getline(is, line)) {
-        std::vector<std::string> rowValues;
-        std::stringstream ss(line);
-        std::string value;
-        
-        while (std::getline(ss, value, ',')) {
-            rowValues.push_back(value);
-        }
-        
-        Row* row = new Row;
-        row->setElements(rowValues);
-        addRow(row);
-    }
+    try {
+        while (std::getline(is, line, '\n')) {
+            std::vector<std::string> rowValues;
+            std::stringstream ss(line);
+            std::string value;
 
-    std::cout << "\nDeserialising table successful!\n\n";
+            while (std::getline(ss, value, ',')) {
+                rowValues.push_back(value);
+            }
+
+            Row* row = new Row;
+            row->setElements(rowValues);
+            addRow(row);
+        }
+        std::cout << "\nDeserializing table successful!\n\n";
+    } catch (const std::exception& e) {
+        std::cout << "Error deserializing table: " << e.what() << std::endl;
+    }
 }
 
 Row* Table::operator[](size_t index){
@@ -99,30 +109,35 @@ Cell* Table::makeCellFromFormula(std::string referenceRowIndex, std::string refe
     return cellInFormula;
 }
 
-void Table::convertFormulasInTable(){
-    for(int i = 0; i < getSize(); ++i){
-        for(int j = 0; j < m_table[i]->getSize(); ++j){
-            std::string currCell = m_table.operator[](i)->operator[](j)->getValueAsString();
-            if(Utils::isFormula(currCell) && Utils::hasReferencesOfCells(currCell)){
-                std::string firstReferenceRowIndex, firstReferenceColumnIndex;
-                std::string secondReferenceRowIndex, secondReferenceColumnIndex;
+void Table::convertFormulasInTable() {
+    try {
+        for (size_t i = 0; i < getSize(); ++i) {
+            for (int j = 0; j < m_table[i]->getSize(); ++j) {
+                std::string currCell = m_table[i]->operator[](j)->getValueAsString();
+                if (Utils::isFormula(currCell) && Utils::hasReferencesOfCells(currCell)) {
+                    std::string firstReferenceRowIndex, firstReferenceColumnIndex;
+                    std::string secondReferenceRowIndex, secondReferenceColumnIndex;
 
-                Utils::getIndexOfCellInReferences(currCell, firstReferenceRowIndex, firstReferenceColumnIndex, secondReferenceRowIndex, secondReferenceColumnIndex);
-                
-                const char operation = Utils::getOperation(currCell);
-                
-                Cell* firstCellInFormula = makeCellFromFormula(firstReferenceRowIndex, firstReferenceColumnIndex);
-                Cell* secondCellInFormula = makeCellFromFormula(secondReferenceRowIndex, secondReferenceColumnIndex);
+                    Utils::getIndexOfCellInReferences(currCell, firstReferenceRowIndex, firstReferenceColumnIndex, secondReferenceRowIndex, secondReferenceColumnIndex);
 
-                std::string literalsFormula = "=" + Utils::tanslateCell(firstCellInFormula->getValueAsString()) + operation + Utils::tanslateCell(secondCellInFormula->getValueAsString());
-                Cell* convertedCell = Utils::convertedValue(literalsFormula);
-                m_table.operator[](i)->addAtPosition(j, convertedCell);
-            }
-            else if(Utils::isFormula(currCell) && Utils::hasOnlyLiterals(currCell)){
-                Cell* convertedCell = Utils::convertedValue(currCell);
-                m_table.operator[](i)->addAtPosition(j, convertedCell);
+                    const char operation = Utils::getOperation(currCell);
+
+                    Cell* firstCellInFormula = makeCellFromFormula(firstReferenceRowIndex, firstReferenceColumnIndex);
+                    Cell* secondCellInFormula = makeCellFromFormula(secondReferenceRowIndex, secondReferenceColumnIndex);
+
+                    std::string literalsFormula = "=" + Utils::translateCell(firstCellInFormula->getValueAsString()) + operation + Utils::translateCell(secondCellInFormula->getValueAsString());
+                    Cell* convertedCell = Utils::convertedValue(literalsFormula);
+                    m_table[i]->addAtPosition(j, convertedCell);
+                }
+                else if (Utils::isFormula(currCell) && Utils::hasOnlyLiterals(currCell)) {
+                    Cell* convertedCell = Utils::convertedValue(currCell);
+                    m_table[i]->addAtPosition(j, convertedCell);
+                }
             }
         }
+    } 
+    catch (const std::exception& e) {
+        std::cout << "Error converting formulas: " << e.what() << std::endl;
     }
 }
 

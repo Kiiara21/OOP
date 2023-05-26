@@ -18,4 +18,3 @@ std::istream& operator>>(std::istream& in, IntCell& cell){
     in >> cell.m_data;
     return in;
 }
-

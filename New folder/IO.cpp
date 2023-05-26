@@ -152,12 +152,9 @@ void IO::help(){
             << "open <file name>.txt - Opens txt file in the editor.\n"
             << "save - Saves the currently opened file.\n"
             << "saveas <file name>.txt - Saves the currently opened file as new file.\n"
-            << "close - Closes the currently opened file if it has been saved.\n\n"
-
-            << "Editor commands are:\n"
-            << "add <Cell> [<data for cell>] - Creates new cell with the specified data.\n"
-            << "erase <index> - Erases cell on the specified index.\n"
-
+            << "close - Closes the currently opened file if it has been saved.\n"
+            << "edit - Edit cell on row and column with new value\n\n"
+            
             << "Util commands are:\n"
             << "print - Prints out the file information about all the cells.\n"
             << "help - Prints out this menu.\n"
@@ -203,5 +200,8 @@ void IO::edit() {
 }
 
 void IO::print(){
+    IO::table.clear();
+    std::ifstream inputFile(IO::m_currentFile);
+    IO::table.deserializeTable(inputFile);
     IO::table.printTable();
 }   

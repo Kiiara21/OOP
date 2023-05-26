@@ -78,7 +78,7 @@ void Row::addStringCell(const std::string& data) {
     }
 }
 
-void Row::addAtPosition(int index, Cell* newCell) {
+void Row::addAtPosition(size_t index, Cell* newCell) {
     try {
         if (index > getSize()) {
             throw std::out_of_range("Invalid index");
@@ -93,61 +93,26 @@ void Row::addAtPosition(int index, Cell* newCell) {
 }
 
 void Row::serializeRow(std::ofstream& os){
-    for(int i = 0; i < m_row.size(); ++i){
-        m_row[i]->serializeCell(os);
+    for(Cell* cell : m_row){
+        cell->serializeCell(os);
     }
     os << "\n";
 }
 
-std::vector<std::string> Row::getRowElements(const std::string& fileName) {
-    std::vector<std::string> words;
-    std::ifstream inputFile(fileName);
-    
-    if (inputFile.is_open()) {
-        std::string line;
-        if (std::getline(inputFile, line)) {
-            std::stringstream ss(line);
-            std::string word;
-            
-            while (std::getline(ss, word, ',')) {
-                std::cout << word << std::endl;
-                words.push_back(word);
+void Row::setElements(std::vector<std::string> rowElements) {
+    for (const std::string& value : rowElements) {
+        try {
+            if (Utils::isEmptyString(value)) {
+                addEmptyCell();
+            } else if (Utils::isInteger(value)) {
+                addIntCell(std::stoi(value));
+            } else if (Utils::isDouble(value)) {
+                addDoubleCell(std::stod(value));
+            } else {
+                addStringCell(value);
             }
-        }
-        
-        inputFile.close();
-    } else {
-        std::cout << "Failed to open the file for reading." << std::endl;
-    }
-    
-    return words;
-}
-
-const size_t Row::getMaxCellSize(){
-    size_t maxCellSize = 0;
-    for(Cell* cell : m_row){
-        size_t currCellSize = cell->getValueAsString().size();
-        std::cout << currCellSize << "\n"; 
-        if(currCellSize > maxCellSize){
-            maxCellSize = currCellSize;
-        }
-    }
-    return maxCellSize;
-}
-
-void Row::setElements(std::vector<std::string> rowElements){
-    for (const std::string& value : rowElements){
-        if(Utils::isEmptyString(value)){
-            addEmptyCell();
-        }
-        else if(Utils::isInteger(value)){
-            addIntCell(std::stoi(value));
-        }
-        else if(Utils::isDouble(value)){
-            addDoubleCell(std::stod(value));
-        }
-        else {
-            addStringCell(value);
+        } catch (const std::exception& e) {
+            std::cout << "\nError: " << e.what() << std::endl;
         }
     }
 }

@@ -24,5 +24,4 @@ public:
     void serializeCell(std::ofstream &os) override final;
 
     friend std::istream& operator>>(std::istream& in, DoubleCell& cell);
-
 };

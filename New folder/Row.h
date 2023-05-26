@@ -33,23 +33,14 @@ public:
     void addIntCell(const int& data);
     void addStringCell(const std::string& data);
     void addDoubleCell(const double& data);
-    
-    void addAtPosition(int index, Cell* newCell);
-
-    const std::vector<Cell*>& getCells() { return m_row; };
-    std::vector<std::string> getRowElements(const std::string& fileName);
-    const size_t getMaxCellSize();
+    void addAtPosition(size_t index, Cell* newCell);
 
     void setElements(std::vector<std::string> rowElement);
     
-    // void erase(int index); to do
-
     void serializeRow(std::ofstream& os);
 
     Cell* operator[](size_t index);
     const Cell* operator[](size_t index) const;
-
-    void convertFormulasInRow();
 
     size_t getSize() const { return m_row.size(); }
 

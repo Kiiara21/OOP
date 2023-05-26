@@ -23,7 +23,6 @@ public:
     static bool isDouble(const std::string& str);
     static bool isEmptyString(const std::string& str);
     static bool isFormula(const std::string& str);
-    static bool isFormulaWithReferences(const std::string& str);
     
     static bool hasSign(const std::string& str);
     static bool isPositive(const std::string& str);
@@ -32,20 +31,13 @@ public:
     static bool hasOnlyLiterals(const std::string& str);
     static bool hasReferencesOfCells(const std::string& str);
 
-    static double calculateResult(double firstNumber, double secondNumber, char operation);
     static Cell* convertedValue(const std::string& str);
-    static void removeRandL(const std::string& str, std::string& rowIndex, std::string& colIndex);
+    static void removeRandC(const std::string& str, std::string& rowIndex, std::string& colIndex);
     static void getIndexOfCellInReferences (const std::string& str, std::string& firstCellRow, std::string& firstCellColumn,
                                                                     std::string& secondCellRow, std::string& secondCellColumn);
-    static std::string tanslateCell(const std::string& cellValue);
+    static std::string translateCell(const std::string& cellValue);
 
     static const char& getOperation(const std::string& str);
     static const unsigned int getOperationPosition(const std::string& str);
-
-    static bool containsOnlyDoubleNumbers(const std::string& str);
-    static bool containsIntegerAndDoubleNumbers(const std::string& str);
-    static bool containsDoubleAndIntegerNumbers(const std::string& str);
-
-    static bool hasDevisionByZero(const std::string& str);
 
 };

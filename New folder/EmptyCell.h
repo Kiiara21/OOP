@@ -12,7 +12,7 @@ public:
 
     EmptyCell() : m_emptyString("") {}
 
-    EmptyCell(const std::string m_emptyString);
+    EmptyCell(const std::string emptyString);
 
     virtual Cell* clone() override final;
 

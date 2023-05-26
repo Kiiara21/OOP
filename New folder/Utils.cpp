@@ -52,7 +52,13 @@ bool Utils::isNegative(const std::string& str){
 }
 
 bool Utils::isFormula(const std::string& str){
-    return str[0] == '=';
+    int counter = 0;
+    for(const char& ch : str){
+        if(ch == '='){
+            counter++;
+        }
+    }
+    return (str[0] == '=' && counter == 1);
 }
 
 bool Utils::isNumber(const char& ch){
@@ -80,17 +86,6 @@ bool Utils::isArithmeticOperation(const char& ch){
     return (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^');
 }
 
-bool Utils::hasDevisionByZero(const std::string& str){
-    double secondNumber;
-    int i = 1;
-    while(!isArithmeticOperation(str[i])){
-        i++;
-    }
-    char operation = str[i];
-    secondNumber = std::stod(str.substr(i + 1, str.size() - i));
-    return (secondNumber == 0 && operation == '/');
-}
-
 bool Utils::hasOnlyLiterals(const std::string& str){
     for(const char& ch : str){
         if(!isNumber(ch) && !isArithmeticOperation(ch) && ch != '='){
@@ -103,66 +98,20 @@ bool Utils::hasOnlyLiterals(const std::string& str){
 bool Utils::hasReferencesOfCells(const std::string& str){
     for(int i = 1; i < str.size(); ++i){
         if(str[i] == 'R'){
-            return true;
+            return isFormula(str);
         }
     }
     return false;
 }
 
-bool Utils::containsOnlyDoubleNumbers(const std::string& str){
-    unsigned int dotCounter = 0;
-    for(const char& ch : str){
-        if(ch == '.'){
-            dotCounter++;
-        }
-    }
-
-    return dotCounter == 2;
-}
-
-bool Utils::containsIntegerAndDoubleNumbers(const std::string& str){
-    unsigned int dotCounter = 0, dotPosition;
-    unsigned int signPosition;
-
-    for(int i = 0; i < str.size(); ++i){
-        if(isArithmeticOperation(str[i])){
-            signPosition = i;
-            break;
-        }
-    }
-
-    for(int i = 0; i < str.size(); ++i){
-        if(str[i] == '.'){
-            dotCounter++;
-            dotPosition = i;
-        }
-    }
-    return (dotCounter == 1 && (dotPosition > signPosition));
-}
-
-bool Utils::containsDoubleAndIntegerNumbers(const std::string& str){
-    unsigned int dotCounter = 0, dotPosition;
-    unsigned int signPosition;
-
-    for(int i = 0; i < str.size(); ++i){
-        if(isArithmeticOperation(str[i])){
-            signPosition = i;
-            break;
-        }
-    }
-
-    for(int i = 0; i < str.size(); ++i){
-        if(str[i] == '.'){
-            dotCounter++;
-            dotPosition = i;
-        }
-    }
-    return (dotCounter == 1 && (dotPosition < signPosition));
-}
-
-std::string Utils::tanslateCell(const std::string& cellValue){
+std::string Utils::translateCell(const std::string& cellValue){
     if(isWord(cellValue) || isEmptyString(cellValue) || isErrorString(cellValue)) return "0";
     else return cellValue;
+}
+
+
+bool isDoubleInteger(double number) {
+    return std::floor(number) == number;
 }
 
 Cell* Utils::convertedValue(const std::string& str){
@@ -194,12 +143,18 @@ Cell* Utils::convertedValue(const std::string& str){
     else result = pow(firstNumber, secondNumber);
     if (std::isinf(result)) {
         result = 0;
+    }   
+
+    if(isDoubleInteger(result)){
+        Cell* intCell = new IntCell(result);
+        return intCell;
     }
+
     Cell* doubleCell = new DoubleCell(result);
     return doubleCell;
 }
 
-void Utils::removeRandL(const std::string& str, std::string& rowIndex, std::string& colIndex){
+void Utils::removeRandC(const std::string& str, std::string& rowIndex, std::string& colIndex){
 
     size_t rPosition = str.find('R');
     size_t cPosition = str.find('C');
@@ -243,8 +198,8 @@ void Utils::getIndexOfCellInReferences(const std::string& str, std::string& firs
         secondReference = "";
     }
 
-    removeRandL(firstReference, firstCellRow, firstCellColumn);
-    removeRandL(secondReference, secondCellRow, secondCellColumn);
+    removeRandC(firstReference, firstCellRow, firstCellColumn);
+    removeRandC(secondReference, secondCellRow, secondCellColumn);
 }
 
  
