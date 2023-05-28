@@ -59,7 +59,9 @@
         "ratio": "cpp",
         "iomanip": "cpp",
         "mutex": "cpp",
-        "semaphore": "cpp"
+        "semaphore": "cpp",
+        "regex": "cpp",
+        "bitset": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }

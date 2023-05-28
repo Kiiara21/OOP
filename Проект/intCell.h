@@ -1,7 +1,9 @@
 #pragma once
 #include "Cell.h"
+#include "IPrintable.h"
+#include <iostream>
 
-class IntCell : public Cell{
+class IntCell : public Cell, public IPrintable {
 
 private:
 
@@ -9,20 +11,16 @@ private:
 
 public:
 
-    IntCell(int data) : Cell(), m_data(data) {}
+    IntCell() : m_data(0) {}
+    IntCell(const int data);
 
-    void printData() const override final {
-        std::cout << m_data << " ";
-    }
+    virtual Cell* clone() override final;
 
-    int getData() const { return m_data; }
+    virtual std::string getValueAsString() const override final {return std::to_string(m_data); }
 
-    friend std::ostream& operator<<(std::ostream& out, const IntCell& intCell);
+    void print() const override final;
 
-    virtual ~IntCell () = default;
+    void serializeCell(std::ofstream& os) override final;
+
+    friend std::istream& operator>>(std::istream& in, IntCell& cell);
 };
-
-std::ostream& operator<<(std::ostream& out, const IntCell& intCell){
-    out << intCell.m_data;
-    return out;
-}

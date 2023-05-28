@@ -1,53 +1,47 @@
 #pragma once
 #include <vector>
-#include <fstream>
-#include "Cell.h"
-using std::vector;
+#include <sstream>
+#include <iomanip>
+#include "IntCell.h"
+#include "DoubleCell.h"
+#include "StringCell.h"
+#include "EmptyCell.h"
+#include "ValidateData.h"
+#include "Utils.h"
 
 class Row {
+    
+private:   
 
-private:
+    static unsigned int s_counter;
+    unsigned int m_rowId;
 
-    vector <Cell> m_row;
+    std::vector<Cell*> m_row;
 
-public: 
+    void copy(const Row& other);
+    void erase();
+    void add(Cell* cell);
 
-    Row() = default;
+public:
 
-    void addCell(const Cell& cellToAdd);
-    // void removeCell(const unsigned int id);
-     
-    void printRow() const;
+    Row();
+    Row(const Row& other);
+    Row& operator=(const Row& other);
+    ~Row();
+
+    void addEmptyCell();
+    void addIntCell(const int& data);
+    void addStringCell(const std::string& data);
+    void addDoubleCell(const double& data);
+    void addAtPosition(size_t index, Cell* newCell);
+
+    void setElements(std::vector<std::string> rowElement);
+    
+    void serializeRow(std::ofstream& os);
+
+    Cell* operator[](size_t index);
+    const Cell* operator[](size_t index) const;
 
     size_t getSize() const { return m_row.size(); }
-
-    friend std::ostream operator<<(std::ostream& out, const Row& row);
-
-}; 
-
-void Row::addCell(const Cell& cellToAdd){
-    m_row.push_back(cellToAdd);
-}
-
-// void Row::removeCell(cosnt unsigned int id){
-//     size_t size = getSize();
-//     for(int i = 0; i < size; ++i){
-//         if(i == id){
-//             // naprawi m_row[i] prazna kletka
-//         }
-//     }
-// }
-
-void Row::printRow() const{
-    size_t size = getSize();
-    for(int i = 0; i < size; ++i){
-        m_row[i].printData();
-    }
-}
-
-std::ostream operator<<(std::ostream& out, const Row& row){
-    size_t size = row.getSize();
-    for(int i = 0; i < size; ++i){
-        out << row.m_row[i];
-    }
-}
+    unsigned int getId() { return m_rowId; }
+};

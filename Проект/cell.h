@@ -1,36 +1,17 @@
 #pragma once
-#include <iostream>
 #include <string>
-using std::string;
+#include <fstream>
 
 class Cell {
 
-protected:
-
-    static int s_cellId;
-    unsigned int m_cellId;
-
 public:
 
-    Cell(){
-        m_cellId = s_cellId++;
-    }
+    virtual Cell* clone() = 0;
 
-    virtual void printData() const {
-        std::cout << m_cellId << " ";
-    }
+    virtual std::string getValueAsString() const = 0;
 
-    virtual unsigned int getId() const { return m_cellId; }
+    virtual void serializeCell(std::ofstream& os) = 0;
 
     virtual ~Cell() = default;
-
-    virtual std::ostream& operator<<(std::ostream& out, const Cell& cell) = 0;
+    
 };
-
-int Cell::s_cellId = 1;
-
-
-
-
-
-

@@ -1,28 +1,29 @@
-#pragma one
+#pragma once
+#include <iostream>
 #include "Cell.h"
+#include "Utils.h"
+#include "IPrintable.h"
 
-class StringCell : public Cell{
+class StringCell : public Cell, public IPrintable {
 
 private:
 
-    string m_data;
+    std::string m_data;
 
 public:
 
-    StringCell(string data) : Cell(), m_data(data) {}
+    StringCell() : m_data("") {}
 
-    void printData() const override final {
-        std::cout << m_data << " ";
-    }
+    StringCell(const std::string data);
 
-    string getData() const { return m_data; }
+    Cell* clone() override final;
 
-    friend std::ostream& operator<<(std::ostream& out, const StringCell& strnigCell);
+    std::string getValueAsString() const override final { return m_data; }
 
-    virtual ~StringCell () = default;
+    void print() const override final;
+
+    void serializeCell(std::ofstream& os) override final;
+
+    friend std::istream& operator>>(std::istream& in, StringCell& cell);
+
 };
-
-std::ostream& operator<<(std::ostream& out, const StringCell& stringCell){
-    out << stringCell.m_data;
-    return out;
-}

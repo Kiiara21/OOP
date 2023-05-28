@@ -1,7 +1,10 @@
-#pragma one
+#pragma once
+#include <regex>
+#include <iostream>
 #include "Cell.h"
+#include "IPrintable.h"
 
-class DoubleCell : public Cell{
+class DoubleCell : public Cell, public IPrintable {
 
 private:
 
@@ -9,20 +12,17 @@ private:
 
 public:
 
-    DoubleCell(double data) : Cell(), m_data(data) {}
+    DoubleCell() : m_data(0.0) {}
 
-    void printData() const override final {
-        std::cout << m_data << " ";
-    }
+    DoubleCell(const double data);
 
-    double getData() const { return m_data; }
+    virtual Cell* clone() override final;
 
-    friend std::ostream& operator<<(std::ostream& out, const DoubleCell& doubleCell);
-    
-    virtual ~DoubleCell () = default;
+    virtual std::string getValueAsString() const override final;
+
+    void print() const override final;
+
+    void serializeCell(std::ofstream &os) override final;
+
+    friend std::istream& operator>>(std::istream& in, DoubleCell& cell);
 };
-
-std::ostream& operator<<(std::ostream& out, const DoubleCell& doubleCell){
-    out << doubleCell.m_data;
-    return out;
-}

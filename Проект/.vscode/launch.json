@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/Yoga 370/Desktop/study/gitRepo/OOP/Проект",
-      "program": "c:/Users/Yoga 370/Desktop/study/gitRepo/OOP/Проект/build/Debug/outDebug",
+      "cwd": "c:/Users/Yoga 370/Desktop/Проект",
+      "program": "c:/Users/Yoga 370/Desktop/Проект/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

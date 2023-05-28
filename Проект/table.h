@@ -1,49 +1,29 @@
-// #pragma once
-// #include <vector>
-// #include "Row.h"
-// using std::vector;
+#pragma once
+#include "Row.h"
 
-// class Table {
+class Table {
 
-// private:
+private:
 
-//     vector <Row> m_rows;
+    std::vector<Row*> m_table;
 
-// public: 
+    Cell* makeCellFromFormula(std::string referenceRowIndex, std::string referenceColumnIndex);
+    void convertFormulasInTable();
 
-//     Table() = default;
+public:
 
-//     void addCell(const int rowToAddIn, const Cell& cellToAdd);
-//     void removeCell(const int rowToAddIn, const unsigned int id);
-     
-//     void printTable() const;
+    void addRow(Row* row);
+    void addEmptyRow(int numberOfCells);
 
-//     size_t getSize() const { return m_rows.size(); }
-// }; 
+    void printTable() const;
 
-// void Table::addCell(const int rowToAddIn, const Cell& cellToAdd){
-//     size_t size = getSize();
-//     for(int i = 0; i < size; ++i){
-//         if(i == rowToAddIn){
-//             m_rows[i].addCell(cellToAdd);
-//         }
-//     }
-// }
+    size_t getSize() const { return m_table.size(); }
 
-// void Table::removeCell(const int rowToRemoveFrom, const unsigned int id){
-//     size_t size = getSize();
-//     for(int i = 0; i < size; ++i){
-//         if(i == rowToAddIn){
-//             m_rows[i].removeCell(id);
-//         }
-//     }
-// }
+    Row* operator[](size_t index);
+    const Row* operator[](size_t index) const;
 
+    void serializeTable(std::ofstream& os);
+    void deserializeTable(std::ifstream &is);
 
-// void Table::printTable() const{
-//     size_t size = getSize();
-//     for(int i = 0; i < size; ++i){
-//         m_rows[i].printRow();
-//     }
-// }
-
+    void clear();
+};
